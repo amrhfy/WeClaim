@@ -10,7 +10,7 @@
             <!-- SVG Code Vector -->
         
         </div>
-    
+
         <div class="flex basis-2/6 justify-center items-center">
             <div class="flex flex-col gap-6 p-6">
                 <!-- WGG Logo & Title -->
@@ -33,7 +33,7 @@
                     </div>
 
                     <div>
-                        <h1 class="text-4xl font-bold text-wgg-black font-normal font-semibold">Sign In Now </h1>
+                        <h1 class="text-4xl text-wgg-black font-normal font-semibold">Sign In Now </h1>
                     </div>
                 </div>
 
