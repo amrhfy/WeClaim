@@ -1,4 +1,4 @@
-<nav class="flex flex-col gap-14 items-center justify-start h-screen bg-gray-200 p-8">
+<nav class="fixed flex flex-col gap-14 items-center justify-start h-screen bg-gray-200 py-10 px-8">
 
     <div class="w-full selection:flex flex-col font-normal text-red-800">
         <span>WeClaims</span>

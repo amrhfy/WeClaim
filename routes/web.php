@@ -24,3 +24,7 @@ Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->
 Route::get('/claims', function () {
     return view('claims.dashboard');
 })->name('claims');
+
+Route::get('claims/new', function () {
+    return view('claims.new');
+})->name('claims-new');
