@@ -1,24 +1,26 @@
 <nav class="flex flex-col gap-14 items-center justify-start h-screen bg-gray-200 p-8">
 
-    <div class="flex flex-col items-center justify-center font-normal font-semibold text-red-800">
+    <div class="w-full selection:flex flex-col font-normal text-red-800">
         <span>WeClaims</span>
         <span>Dev Version v0.1</span>
     </div>
 
-    <div class="flex flex-col gap-4 items-center justify-center font-normal">
+    <div class="w-full flex flex-col gap-4 font-normal">
+        
+        <a href="{{ route('home') }}">Home Page</a>
 
-        @php
-            $links = [
-                ['title' => 'Register', 'link' => 'null'],
-                ['title' => 'Login', 'link' => route('login')],
-            ];   
-        @endphp
+        <a href="{{ route('login') }}">Login Page</a>
 
-        @foreach ($links as $link)
-            <span class="transition-all cursor-pointer flex justify-center items-center font-semibold py-2 px-6 w-full bg-gray-700 text-white rounded hover:bg-gray-900">
-                <a href="{{ $link['link'] }}">{{ $link['title'] }}</a>
-            </span>
-        @endforeach
+        @auth
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+
+        </form>
+
+        <a href="{{ route('claims') }}">Claims</a>
+        @endauth
+
     </div>
 
 </nav>

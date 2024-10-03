@@ -11,7 +11,7 @@
 
 
         <!-----! CONTENT TO RIGHT !---->
-        <div class="basis-5/6 p-20">
+        <div class="basis-5/6 px-10 py-8">
             {{ $slot }}
         </div>
     </div>

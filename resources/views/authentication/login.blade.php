@@ -33,20 +33,26 @@
                     </div>
 
                     <div>
-                        <h1 class="text-4xl font-bold text-wgg-black font-normal">Sign In Now </h1>
+                        <h1 class="text-4xl font-bold text-wgg-black font-normal font-semibold">Sign In Now </h1>
                     </div>
                 </div>
 
                 <!-- Form for Email & Password -->
                 <div class="w-full p-10">
-                    <form class="flex flex-col justify-center items-center gap-2 font-normal text-wgg-border" action="">
+                    <form method="POST" class="flex flex-col justify-center items-center gap-2 font-normal text-wgg-border" action="{{ route('login') }}">
+                    @csrf
+
                         <!-- Form for Email -->
-                        <input class="rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black focus:border-bg-wgg-black" type="text" placeholder="Your Email">
+                        <input value="{{ old('email') }}" name="email" class="transition-all ease-in-out rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black focus:border-bg-wgg-black focus:border-wgg-gray focus:drop-shadow-sm" type="text" placeholder="Your Email">
 
                         <!-- Form for Password -->
-                        <input class="rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black" type="password" placeholder="Your Password">
+                        <input name="password" class="rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black focus:border-wgg-gray focus:drop-shadow-sm" type="password" placeholder="Your Password">
 
-                        <button class="transition-all cursor-pointer w-full text-l font-semibold font-normal rounded-lg py-4 px-6 bg-wgg-black text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
+                        @error('password')
+                        <p class="text-center w-full p-2 rounded-lg bg-red-200 text-red-600">{{ $message }}</p>
+                        @enderror
+
+                        <button class="transition-all ease-in-out cursor-pointer w-full text-l font-semibold font-normal rounded-lg py-4 px-6 bg-wgg-black text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
                         
                         <div class="flex flex-col justify-center items-start w-full">
 

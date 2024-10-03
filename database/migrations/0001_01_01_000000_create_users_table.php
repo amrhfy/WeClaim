@@ -18,6 +18,18 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // A role enum for staff, admin, hr, finance
+            $table->enum('role', ['Staff', 'Admin', 'HR', 'Finance', 'SU']);
+            // A department enum for:
+            // -> Administration
+            // -> Human Resources
+            // -> Finance and Account
+            // -> Marketing
+            // -> Sales
+            // -> IT and Technical
+            // -> Procurement and Assets
+            // -> Retails
+            $table->enum('department', ['Administration', 'Human Resources', 'Finance and Account', 'Marketing', 'Sales', 'IT and Technical', 'Procurement and Assets', 'Retails', 'All']);
             $table->rememberToken();
             $table->timestamps();
         });
