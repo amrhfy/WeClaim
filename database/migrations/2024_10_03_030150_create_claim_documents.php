@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('claim_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('claim_id')->constrained()->onDelete('cascade');
+            $table->foreignId('claim_id')->constrained('claims', 'claim_id')->onDelete('cascade');
             $table->string('file_name');
             $table->string('file_path');
             $table->foreignId('uploaded_by')->constrained('users');

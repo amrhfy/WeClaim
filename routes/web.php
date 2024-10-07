@@ -28,3 +28,6 @@ Route::get('/claims', function () {
 Route::get('claims/new', function () {
     return view('claims.new');
 })->name('claims-new');
+
+Route::post('claims/new', [App\Http\Controllers\ClaimController::class , 'store'])
+->name('claims-new');

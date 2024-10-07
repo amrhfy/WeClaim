@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('claim_history', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('claim_id')->constrained()->onDelete('cascade');
+            $table->foreignId('claim_id')->constrained('claims', 'claim_id')->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->string('action');
             $table->text('details')->nullable();
             $table->timestamps();
         });
+        
+        
     }
 
     /**

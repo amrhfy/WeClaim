@@ -1,6 +1,6 @@
-<nav class="fixed flex flex-col gap-14 items-center justify-start h-screen bg-gray-200 py-10 px-8">
+<div class="fixed flex flex-col gap-14 items-center justify-start h-screen bg-gray-200 py-10 px-10">
 
-    <div class="w-full selection:flex flex-col font-normal text-red-800">
+    <div class="flex flex-col font-normal text-red-800">
         <span>WeClaims</span>
         <span>Dev Version v0.1</span>
     </div>
@@ -23,4 +23,4 @@
 
     </div>
 
-</nav>
+</div>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('claim_reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('claim_id')->constrained()->onDelete('cascade');
+            $table->foreignId('claim_id')->constrained('claims', 'claim_id')->onDelete('cascade');
             $table->foreignId('reviewer_id')->constrained('users');
             $table->enum('status', ['approved', 'rejected']);
             $table->text('comments')->nullable();

@@ -5,13 +5,13 @@
     <div class="container flex">
         
         <!-----! SIDEBAR FIXED TO LEFT !---->
-        <div class="relative basis-2/6">
+        <div class="basis-2/12 flex">
            @include('components.sidebar')
         </div>
 
 
         <!-----! CONTENT TO RIGHT !---->
-        <div class="flex justify-start items-start basis-5/6 py-10">
+        <div class="basis-10/12 flex justify-center items-center py-10 px-10">
             {{ $slot }}
         </div>
     </div>
