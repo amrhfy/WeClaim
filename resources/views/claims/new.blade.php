@@ -156,7 +156,11 @@
 
     </div>
 
-    @vite(['resources/js/app.js'])
+    @vite([
+        'resources/css/app.css',
+        'resources/css/app.js',
+        'resources/js/form_logic.js'
+        ])
 
     @endauth
 
