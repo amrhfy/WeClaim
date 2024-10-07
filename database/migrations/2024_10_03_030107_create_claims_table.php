@@ -19,10 +19,10 @@ return new class extends Migration
             $table->timestamp('submitted_at')->nullable();
             $table->string('claim_company');
             $table->decimal('toll_amount')->nullable();
-            $table->string('from_location');
-            $table->string('to_location');
-            $table->timestamp('date_from');
-            $table->timestamp('date_to');
+            $table->string('from_location')->nullable();
+            $table->string('to_location')->nullable();
+            $table->timestamp('date_from')->nullable();
+            $table->timestamp('date_to')->nullable();
             $table->timestamps();
         });
     }
