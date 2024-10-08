@@ -64,34 +64,28 @@ destinationInput.addEventListener('change', calculateDefaultRoute);
 originAutocomplete.addListener('place_changed', calculateDefaultRoute);
 destinationAutocomplete.addListener('place_changed', calculateDefaultRoute);
 
+// File Upload Progress Bar
 
-////////////////////////////////////////////////////////////////////////
-///////////////////// File Upload Progress Bar /////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-const fileUpload = document.getElementById('toll_report');
-
-function handleFileUpload(event) {
-    const fileLabel = document.getElementById('file_label');
+function handleFileUpload(event, progressContainerId, progressBarId, fileLabelId) {
+    const fileLabel = document.getElementById(fileLabelId);
     const fileName = event.target.files[0] ? event.target.files[0].name : 'No File Selected';
 
-    const progressContainer = document.getElementById('progress_container');
-    const progressBar = document.getElementById('progress_bar');
+    const progressContainer = document.getElementById(progressContainerId);
+    const progressBar = document.getElementById(progressBarId);
     progressContainer.classList.remove('hidden');
 
-    let progress = 0;
-
-    const interval = setInterval(() => {
-        if (progress >= 100) {
-            clearInterval(interval);
-            progressContainer.classList.add('hidden');
-            fileLabel.textContent = fileName;
-            
-        } else {
-            progress += 10;
-            progressBar.style.width = `${progress}%`;
-        }
-    }, 200);
+    // Simulate progress for demonstration purposes
+    progressBar.style.width = '100%';
+    setTimeout(() => {
+        progressContainer.classList.add('hidden');
+        fileLabel.textContent = fileName;
+    }, 1000);
 }
 
-fileUpload.addEventListener('change', handleFileUpload);
+document.getElementById('toll_report').addEventListener('change', (event) => {
+    handleFileUpload(event, 'toll_progress_container', 'toll_progress_bar', 'toll_file_label');
+});
+
+document.getElementById('email_report').addEventListener('change', (event) => {
+    handleFileUpload(event, 'email_progress_container', 'email_progress_bar', 'email_file_label');
+});

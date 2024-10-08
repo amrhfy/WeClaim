@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('claim_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('claim_id')->constrained('claims', 'claim_id')->onDelete('cascade');
-            $table->string('file_name');
-            $table->string('file_path');
+            $table->string('toll_file_name');
+            $table->string('toll_file_path');
+            $table->string('email_file_name');
+            $table->string('email_file_path');
             $table->foreignId('uploaded_by')->constrained('users');
             $table->timestamps();
         });

@@ -11,8 +11,10 @@ class ClaimDocument extends Model
 
     protected $fillable = [
         'claim_id',
-        'file_name',
-        'file_path',
+        'toll_file_name',
+        'toll_file_path',
+        'email_file_name',
+        'email_file_path',
         'uploaded_by',
     ];
 

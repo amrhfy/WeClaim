@@ -2,16 +2,16 @@
 
 
     
-    <div class="container flex">
+    <div>
         
-        <!-----! SIDEBAR FIXED TO LEFT !---->
-        <div class="basis-2/12 flex">
-           @include('components.sidebar')
+        <!-----! NAVBAR LEFT !---->
+        <div>
+           @include('components.navbar')
         </div>
 
 
         <!-----! CONTENT TO RIGHT !---->
-        <div class="basis-10/12 flex justify-center items-center py-10 px-10">
+        <div class="py-10 px-10">
             {{ $slot }}
         </div>
     </div>

@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Claim extends Model
 {
-    protected $primaryKey = 'claim_id';
     use HasFactory;
+
+    protected $primaryKey = 'claim_id';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

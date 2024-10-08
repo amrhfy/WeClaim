@@ -33,7 +33,7 @@
                     </div>
 
                     <div>
-                        <h1 class="text-4xl text-wgg-black font-normal font-semibold">Sign In Now </h1>
+                        <h1 class="text-4xl text-wgg-black-950 font-normal font-semibold">Sign In Now </h1>
                     </div>
                 </div>
 
@@ -43,16 +43,16 @@
                     @csrf
 
                         <!-- Form for Email -->
-                        <input value="{{ old('email') }}" name="email" class="transition-all ease-in-out rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black focus:border-bg-wgg-black focus:border-wgg-gray focus:drop-shadow-sm" type="text" placeholder="Your Email">
+                        <input value="{{ old('email') }}" name="email" class="transition-all ease-in-out rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black-950 focus:border-bg-wgg-black-950 focus:border-wgg-gray focus:drop-shadow-sm" type="text" placeholder="Your Email">
 
                         <!-- Form for Password -->
-                        <input name="password" class="rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black focus:border-wgg-gray focus:drop-shadow-sm" type="password" placeholder="Your Password">
+                        <input name="password" class="rounded-lg py-3 px-6 w-full border border-wgg-border text-wgg-black-950 focus:border-wgg-gray focus:drop-shadow-sm" type="password" placeholder="Your Password">
 
                         @error('password')
                         <p class="text-center w-full p-2 rounded-lg bg-red-200 text-red-600">{{ $message }}</p>
                         @enderror
 
-                        <button class="transition-all ease-in-out cursor-pointer w-full text-l font-semibold font-normal rounded-lg py-4 px-6 bg-wgg-black text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
+                        <button class="transition-all ease-in-out cursor-pointer w-full text-l font-semibold font-normal rounded-lg py-4 px-6 bg-wgg-black-950 text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
                         
                         <div class="flex flex-col justify-center items-start w-full">
 
