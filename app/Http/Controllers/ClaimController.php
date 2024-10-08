@@ -76,13 +76,11 @@ class ClaimController extends Controller
                 case 'Zoo Melaka':
                     $claim_company = 'WGE';
                     break;
-
                 case 'Zoo Teruntum':
                 case 'Silverlake Outlet Mall':
                 case 'Wegrow Global Sdn Bhd':
                     $claim_company = 'WGG';
                     break;
-
                 default:
                     $claim_company = 'Unknown';
             }
@@ -115,7 +113,7 @@ class ClaimController extends Controller
             Log::info('Claim saved', ['claim_id' => $claim->id]);
     
             // Title will depends on the user ID and claim ID
-            $claim->title = '[' . $claim->claim_id . '] ' .'Petrol Claim - ' . $user->first_name;
+            $claim->title = 'Petrol Claim - ' . $request->input('claim_company');
 
             // 2nd Save the updated claim to the database
             // To allow title to be updated based on the user ID and claim ID

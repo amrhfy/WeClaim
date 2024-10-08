@@ -61,7 +61,7 @@
                 <!-- Claim Places Selector -->
                 <div class="flex flex-col gap-2 *:font-normal *:text-wgg-black-950">
                     <label class="text-m" for="claim_company">Branches</label>
-                    <select class="py-2 px-4 rounded-lg text-xs" name="claim_company" id="claim_company">
+                    <select value="{{ old('claim_company') }}" class="py-2 px-4 rounded-lg text-xs" name="claim_company" id="claim_company">
                         <option>Wegrow Global Sdn Bhd</option>
                         <option>Malaysia Heritage Studios</option>
                         <option>Zoo Melaka</option>
@@ -83,13 +83,13 @@
                         <!-- Origin Location -->
                         <div class="flex flex-col basis-1/2 gap-2">
                             <label class="text-m" for="from_location">From Location</label>
-                            <input value="" class="text-xs rounded-lg py-2 px-4 border border-wgg-border" type="text" name="origin" id="origin">
+                            <input value="{{ old('origin') }}" class="text-xs rounded-lg py-2 px-4 border border-wgg-border" type="text" name="origin" id="origin">
                         </div>
 
                         <!-- Destination Location -->
                         <div class="flex flex-col basis-1/2 gap-2">
                             <label class="text-m" for="from_location">To Location</label>
-                            <input value="" class="text-xs rounded-lg py-2 px-4 border border-wgg-border" type="text" name="destination" id="destination">
+                            <input value="{{ old('destination') }}" class="text-xs rounded-lg py-2 px-4 border border-wgg-border" type="text" name="destination" id="destination">
                         </div>
                     </div>
                     <div class="flex justify-between gap-2 w-100  *:font-normal *:text-xs">
@@ -111,7 +111,7 @@
                 <!-- Remark Area -->
                 <div class="flex flex-col gap-2 *:font-normal *:text-wgg-black-950">
                     <label class="text-m" for="remarks">Remarks</label>
-                    <textarea class="text-xs p-4 rounded-lg border border-wgg-border" name="remarks" id="" cols="10" rows="10"></textarea>
+                    <textarea value="{{ old('remarks') }}" class="text-xs p-4 rounded-lg border border-wgg-border" name="remarks" id="" cols="10" rows="10"></textarea>
                 </div>
 
                 <!-- Toll Area -->
@@ -121,7 +121,7 @@
                     <div class="flex flex-row gap-2">
 
                         <!-- Toll Amount Input -->
-                        <input class="text-xs py-2 px-4 basis-1/3 border border-wgg-border rounded-lg" placeholder="51.25" type="number" name="toll_amount" id="toll_amount" step="0.01">
+                        <input value="{{ old('toll_amount') }}" class="text-xs py-2 px-4 basis-1/3 border border-wgg-border rounded-lg" placeholder="51.25" type="number" name="toll_amount" id="toll_amount" step="0.01">
                         @error('toll_amount')
                         <span class="rounded-lg flex justify-center items-center bg-red-500 py-2 px-4 font-normal text-wgg-white text-xs">{{ $message }}</span>
                         @enderror

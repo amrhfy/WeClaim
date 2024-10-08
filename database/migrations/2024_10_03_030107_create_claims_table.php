@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('amount', 8, 2);
-            $table->enum('status', ['draft', 'submitted', 'under_review', 'approved_admin', 'approved_hr', 'approved_finance', 'rejected'])->default('draft');
+            $table->string('status')->default('Submitted');
             $table->string('claim_type', 10)->default('others');
             $table->timestamp('submitted_at')->nullable();
             $table->string('claim_company');
