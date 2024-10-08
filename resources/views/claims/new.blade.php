@@ -78,6 +78,7 @@
                 <!-- Google MAPS API Usage Here -->
 
                 <div class="flex flex-col gap-2 *:font-normal *:text-wgg-black-950">
+                    <!-- Location Selector -->
                     <div class="flex flex-row gap-2">
                         
                         <!-- Origin Location -->
@@ -92,8 +93,12 @@
                             <input value="{{ old('destination') }}" class="text-xs rounded-lg py-2 px-4 border border-wgg-border" type="text" name="destination" id="destination">
                         </div>
                     </div>
-                    <div class="flex justify-between gap-2 w-100  *:font-normal *:text-xs">
 
+                    <!-- Map Container -->
+                    <div id="map" class="rounded-lg" style="height:300px; width: 100%"></div>
+
+                    <!-- Calculation Result -->
+                    <div class="flex justify-between gap-2 w-100  *:font-normal *:text-xs">
                         <!-- Distance Calculation Text -->
                         <div class="flex flex-row gap-2 w-full">
                             <div class="flex justify-center items-center h-100 bg-green-200 border border-wgg-border rounded-lg  w-full py-4 px-8 gap-2">
@@ -101,10 +106,16 @@
                                 <span class="font-bold" id="total_distance">N/A</span>
                                 <input type="hidden" name="total_distance_input" id="total_distance_input">
                             </div>
+
+                            <!-- Error Handling -->
                             @error('total_distance_input')
                             <span class="rounded-lg flex justify-center items-center bg-red-500 py-2 px-4 font-normal text-wgg-white text-xs">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <button id="alternative_route" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Calculate Alternative Route
+                        </button>
                     </div>
                 </div>
 

@@ -1,8 +1,10 @@
 <x-layout>
     @auth
-    <main class="flex flex-col gap-4">
+    <main class="flex flex-col w-full gap-4">
+
+        <!-- New Claim Button -->
         <div class="flex *:font-normal">
-            <a class="flex justify-center items-center gap-2 transition-all ease-in-out py-3 px-6 bg-wgg-black-950 text-wgg-white rounded-lg hover:bg-wgg-black-600" href="{{ route('claims-new') }}">
+            <a class="flex justify-center items-center gap-2 transition-all ease-in-out py-3 px-6 bg-green-600 text-wgg-white rounded-lg drop-shadow-md hover:bg-green-800" href="{{ route('claims-new') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
                 </svg>
@@ -10,21 +12,23 @@
             </a>
         </div>
 
-        <div class="w-full flex flex-col gap-10">
+        <!-- Existing Claims List -->
+        <div class="w-full flex flex-col gap-5 p-8 bg-wgg-black-50 rounded-lg drop-shadow-md *:font-normal">
 
-            <div>
+            <!-- Claims Header -->
+            <div class="flex flex-col px-4">
                 <h1 class="text-2xl font-semibold">Your Claims List</h1>
                 <span class="text-red-500">Temporary data going to be dump into table for testing purpose</span>
             </div>
 
+            <!-- Table Container -->
             <div class="*:font-normal flex-col flex gap-4">
-
-
 
                 <table class="table-auto">
                     <tr class="*:font-normal *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10">
                         <th>Submitted At</th>
                         <th>Company</th>
+                        <th>Claim Type</th>
                         <th>Title</th>
                         <th>Petrol (RM)</th>
                         <th>Toll (RM)</th>
@@ -38,11 +42,12 @@
 
                             <th>{{ $claim->submitted_at }}</th>
                             <th>{{ $claim->claim_company }}</th>
+                            <th>{{ $claim->claim_type }}</th>
                             <th>{{ $claim->title }}</th>
                             <th>{{ $claim->amount }}</th>
                             <th>{{ $claim->toll_amount }}</th>
-                            <th>
-                                <span class="flex justify-center items-center py-2 gap-2 text-wgg-white rounded-lg
+                            <th class="flex">
+                                <span class="inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg
 
                                     @if ($claim->status == 'Submitted')
                                         bg-orange-500">

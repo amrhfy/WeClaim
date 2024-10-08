@@ -17,3 +17,19 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+/* Navigation Bar */
+
+@layer components {
+    .navbar-container {
+        @apply flex flex-row rounded-full gap-4;
+    }
+
+    .navbar-link {
+        @apply flex flex-row justify-center items-center gap-2 drop-shadow-md bg-wgg-black-950 text-wgg-white py-3 px-6 font-normal rounded-lg transition-all ease-in-out cursor-pointer hover:bg-wgg-black-600 hover:-translate-y-0.5;
+    }
+
+    .navbar-icon {
+        @apply w-5 h-5;
+    }
+}
