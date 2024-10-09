@@ -21,6 +21,14 @@ input[type="number"] {
 /* Navigation Bar */
 
 @layer components {
+
+    /* Main or Utilities Classes */
+    .main {
+        @apply flex flex-col w-full gap-4;
+    }
+    /*****************************/
+
+    /* Navigation Page Classes */
     .navbar-container {
         @apply flex flex-row rounded-full gap-4;
     }
@@ -31,5 +39,53 @@ input[type="number"] {
 
     .navbar-icon {
         @apply w-5 h-5;
+    }
+
+    #new-claim {
+        @apply bg-green-500 hover:bg-green-600;
+    }
+
+    /*****************************/
+
+    /* Claims Approval Classes */
+    .claims-approval-container {
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal;
+    }
+
+    .claims-approval-table-header {
+        @apply *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10;
+    }
+
+    .claims-approval-table-row {
+        @apply *:text-sm *:font-normal *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out;
+    }
+
+    .claims-approval-status-badge-admin {
+        @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg bg-orange-500;
+    }
+
+    .claims-approval-action-button {
+        @apply flex justify-center items-center gap-2 py-1 px-4 bg-wgg-black-950 text-wgg-white rounded-lg hover:bg-wgg-black-600 transition-all ease-in-out;
+    }
+
+
+    /*****************************/
+
+    /* Claims Dashboard Classes */
+
+    .claims-dashboard-container {
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal;
+    }
+
+    .claims-dashboard-table-header {
+        @apply *:font-normal *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10;
+    }
+
+    .claims-dashboard-table-row {
+        @apply *:font-normal *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out hover:bg-wgg-black-100;
+    }
+
+    .claims-dashboard-status-badge {
+        @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg;
     }
 }

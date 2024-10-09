@@ -1,19 +1,9 @@
 <x-layout>
     @auth
-    <main class="flex flex-col w-full gap-4">
-
-        <!-- New Claim Button -->
-        <div class="flex *:font-normal">
-            <a class="flex justify-center items-center gap-2 transition-all ease-in-out py-3 px-6 bg-green-600 text-wgg-white rounded-lg drop-shadow-md hover:bg-green-800" href="{{ route('claims-new') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-                </svg>
-                New Claim
-            </a>
-        </div>
+    <main class="main">
 
         <!-- Existing Claims List -->
-        <div class="w-full flex flex-col gap-5 p-8 bg-wgg-black-50 rounded-lg drop-shadow-md *:font-normal">
+        <div class="claims-dashboard-container">
 
             <!-- Claims Header -->
             <div class="flex flex-col px-4">
@@ -22,10 +12,10 @@
             </div>
 
             <!-- Table Container -->
-            <div class="*:font-normal flex-col flex gap-4">
+            <div class="flex-col flex gap-4">
 
                 <table class="table-auto">
-                    <tr class="*:font-normal *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10">
+                    <tr class="claims-dashboard-table-header">
                         <th>Submitted At</th>
                         <th>Company</th>
                         <th>Claim Type</th>
@@ -33,11 +23,12 @@
                         <th>Petrol (RM)</th>
                         <th>Toll (RM)</th>
                         <th>Status</th>
+                        <th> </th>
                     </tr>
 
                     @foreach ($claims as $claim)
 
-                        <tr class="*:font-normal *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out hover:bg-wgg-black-100">
+                        <tr class="claims-dashboard-table-row">
                             <!-- format the submitted date nicer -->
 
                             <th>{{ $claim->submitted_at }}</th>
@@ -47,7 +38,7 @@
                             <th>{{ $claim->amount }}</th>
                             <th>{{ $claim->toll_amount }}</th>
                             <th class="flex">
-                                <span class="inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg
+                                <span class="claims-dashboard-status-badge
 
                                     @if ($claim->status == 'Submitted')
                                         bg-orange-500">
@@ -82,7 +73,14 @@
                                     
                                     @endif
                                 </span>  
-
+                                <td>
+                                    <a href="{{ route('claims-claim', $claim->claim_id) }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                        </svg>
+                                    </a>
+                                </td>
                             </th>
                         </tr>
 
@@ -98,7 +96,7 @@
     @endauth
 
     @guest
-        <!-- Redirectmy user to login page -->
+        <!-- Redirect user to login page -->
         <script>window.location.href = "{{ route('login') }}";</script>   
     @endguest
 

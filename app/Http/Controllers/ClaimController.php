@@ -15,14 +15,21 @@ use Illuminate\Support\Facades\Validator;
 class ClaimController extends Controller
 {
 
-    public function index()
+
+    public function index($view)
     {
         if (Auth::check()) {
             $claims = Claim::with('user')->where('user_id', Auth::id())->get();
-            return view('claims.dashboard', compact('claims'));
+            return view($view, compact('claims'));
         }
         
         return redirect()->route('login');
+    }
+
+    public function show($id, $view)
+    {
+        $claim = Claim::findOrFail($id);
+        return view($view, compact('claim'));
     }
     
 

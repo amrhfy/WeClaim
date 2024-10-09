@@ -21,7 +21,9 @@ Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->
 
 // All Claims Routes
 
-Route::get('/claims', [App\Http\Controllers\ClaimController::class, 'index'])->name('claims-dashboard');
+Route::get('claims', function () {
+    return app('App\Http\Controllers\ClaimController')->index('claims.dashboard');
+})->name('claims-dashboard');
 
 Route::get('claims/new', function () {
     return view('claims.new');
@@ -29,3 +31,11 @@ Route::get('claims/new', function () {
 
 Route::post('claims/new', [App\Http\Controllers\ClaimController::class , 'store'])
 ->name('claims-new');
+
+Route::get('claims/approval', function () {
+    return app('App\Http\Controllers\ClaimController')->index('claims.approval');
+})->name('claims-approval');
+
+Route::get('claims/{id}', function ($id) {
+    return app('App\Http\Controllers\ClaimController')->show($id, 'claims.claim');
+})->name('claims-claim');
