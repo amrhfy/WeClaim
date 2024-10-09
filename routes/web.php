@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClaimController;
 use Illuminate\Support\Facades\Route;
 
 // All Static Routes
@@ -39,3 +40,12 @@ Route::get('claims/approval', function () {
 Route::get('claims/{id}', function ($id) {
     return app('App\Http\Controllers\ClaimController')->show($id, 'claims.claim');
 })->name('claims-claim');
+
+Route::get('claims/approval/{id}', function ($id) {
+    return app('App\Http\Controllers\ClaimController')->show($id, 'claims.review');
+})->name('claims-approval-review');
+
+Route::get('/claims/approve/{token}', [ClaimController::class, 'approve'])->name('claims.approve');
+Route::get('/claims/reject/{token}', [ClaimController::class, 'reject'])->name('claims.reject');
+
+Route::get('/send-claim-email/{id}', [ClaimController::class, 'sendClaimEmail'])->name('claims.send-email');

@@ -81,6 +81,11 @@
                                         </svg>
                                     </a>
                                 </td>
+                                <td>
+                                    <!-- Other claim details -->
+                                    <a href="{{ route('claims.send-email', $claim->claim_id) }}" class="">Send Email</a>
+                                
+                                </td>
                             </th>
                         </tr>
 

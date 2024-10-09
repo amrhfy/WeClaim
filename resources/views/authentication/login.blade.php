@@ -33,13 +33,13 @@
                     </div>
 
                     <div>
-                        <h1 class="text-4xl text-wgg-black-950 font-normal font-semibold">Sign In Now </h1>
+                        <h1 class="text-4xl text-wgg-black-950 font-wgg font-semibold">Sign In Now </h1>
                     </div>
                 </div>
 
                 <!-- Form for Email & Password -->
                 <div class="w-full p-10">
-                    <form method="POST" class="flex flex-col justify-center items-center gap-2 font-normal text-wgg-border" action="{{ route('login') }}">
+                    <form method="POST" class="flex flex-col justify-center items-center gap-2 font-normal font-wgg text-wgg-border" action="{{ route('login') }}">
                     @csrf
 
                         <!-- Form for Email -->
@@ -52,18 +52,18 @@
                         <p class="text-center w-full p-2 rounded-lg bg-red-200 text-red-600">{{ $message }}</p>
                         @enderror
 
-                        <button class="transition-all ease-in-out cursor-pointer w-full text-l font-semibold font-normal rounded-lg py-4 px-6 bg-wgg-black-950 text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
+                        <button class="transition-all ease-in-out cursor-pointer w-full text-l font-semibold font-wgg rounded-lg py-4 px-6 bg-wgg-black-950 text-wgg-white hover:bg-wgg-gray" type="submit">Sign In</button>
                         
                         <div class="flex flex-col justify-center items-start w-full">
 
-                            <p class="font-normal text-xl font-bold text-red-900">Developer Tools</p>
+                            <p class="font-wgg text-xl font-bold text-red-900">Developer Tools</p>
                             
                             <div>
                                 <ol>
                                     <li>
-                                        <a class="font-normal text-l font-semibold text-red-600 hover:text-red-800" href="{{ route('home') }}">- Go Home</a></li>
+                                        <a class="font-wgg text-l font-semibold text-red-600 hover:text-red-800" href="{{ route('home') }}">- Go Home</a></li>
                                     <li>
-                                        <a class="font-normal text-l font-semibold text-red-600 hover:text-red-800" href="{{ route('home') }}">- Clear Token Cookies</a>
+                                        <a class="font-wgg text-l font-semibold text-red-600 hover:text-red-800" href="{{ route('home') }}">- Clear Token Cookies</a>
                                     </li>
                                 </ol>
                                 

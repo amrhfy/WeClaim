@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClaimDocument extends Model
 {
+
+    public function claim() {
+        return $this->belongsTo(Claim::class);
+    }
+
     use HasFactory;
 
     protected $fillable = [

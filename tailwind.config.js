@@ -7,7 +7,7 @@ export default {
   ],
   theme: {
     fontFamily: {
-      normal: ['Poppins', 'sans-serif'],
+      'wgg': ['Poppins', 'sans-serif'],
     },
     extend: {
       colors: {

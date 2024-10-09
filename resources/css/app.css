@@ -6,6 +6,7 @@
     outline: none;
 }
 
+
 /* For Chrome, Safari, Edge, and Opera */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -34,7 +35,7 @@ input[type="number"] {
     }
 
     .navbar-link {
-        @apply flex flex-row justify-center items-center gap-2 drop-shadow-md bg-wgg-black-950 text-wgg-white py-3 px-6 font-normal rounded-lg transition-all ease-in-out cursor-pointer hover:bg-wgg-black-600 hover:-translate-y-0.5;
+        @apply flex flex-row justify-center items-center gap-2 drop-shadow-md bg-wgg-black-950 text-wgg-white py-3 px-6 font-normal font-wgg rounded-lg transition-all ease-in-out cursor-pointer hover:bg-wgg-black-600 hover:-translate-y-0.5;
     }
 
     .navbar-icon {
@@ -49,7 +50,7 @@ input[type="number"] {
 
     /* Claims Approval Classes */
     .claims-approval-container {
-        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal;
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
 
     .claims-approval-table-header {
@@ -57,7 +58,7 @@ input[type="number"] {
     }
 
     .claims-approval-table-row {
-        @apply *:text-sm *:font-normal *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out;
+        @apply *:text-sm *:font-normal *:font-wgg *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out;
     }
 
     .claims-approval-status-badge-admin {
@@ -74,15 +75,15 @@ input[type="number"] {
     /* Claims Dashboard Classes */
 
     .claims-dashboard-container {
-        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal;
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
 
     .claims-dashboard-table-header {
-        @apply *:font-normal *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10;
+        @apply *:font-normal *:font-wgg *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10;
     }
 
     .claims-dashboard-table-row {
-        @apply *:font-normal *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out hover:bg-wgg-black-100;
+        @apply *:font-normal *:font-wgg *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out hover:bg-wgg-black-100;
     }
 
     .claims-dashboard-status-badge {
