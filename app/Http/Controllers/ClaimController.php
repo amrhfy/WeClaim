@@ -80,14 +80,6 @@ class ClaimController extends Controller
         return redirect()->route('claims.index')->with('success', 'Claim submitted successfully!');
     }
 
-    
-    public function sendClaimEmail($id)
-    {
-        $claim = Claim::findOrFail($id);
-        Mail::to('ammar@wegrow-global.com')->send(new ClaimActionMail($claim));
-        return redirect()->back()->with('status', 'Email sent successfully!');
-    }
-
 
 
 }
