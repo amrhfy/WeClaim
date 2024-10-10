@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClaimRequest;
 use App\Models\Claim;
-use App\Models\ClaimDocument;
-use App\Models\User;
 use App\Mail\ClaimActionMail;
 use App\Services\ClaimService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

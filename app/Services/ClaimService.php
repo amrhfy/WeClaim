@@ -7,17 +7,9 @@ use App\Models\Claim;
 use App\Models\ClaimDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Str;
 
 class ClaimService
 {
-
-    /*
-    
-    Create Claim Function
-    
-    */
-
     public function createClaim(array $data, User $user)
     {
         $totalDistance = $data['total_distance_input'];

@@ -2,40 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Claim;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    // Login User
-    public function login(Request $request)
+
+    protected $authService;
+    const LOGIN_FAILED_MESSAGE = 'Login failed. Please check your email and password.';
+
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    public function login(LoginRequest $request)
     {
 
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->validated();
 
-        if (Auth::attempt($credentials)) {
+        if ($this->authService->attemptLogin($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('home');
-        } else {
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-                'password' => 'The provided credentials do not match our records.',
-            ]);
         }
+
+
+        return back()->withErrors([
+            'email' => self::LOGIN_FAILED_MESSAGE,
+            'password' => self::LOGIN_FAILED_MESSAGE,
+        ]);
     }
 
 
-    // Logout User
     public function logout(Request $request)
     {
-        Auth::logout();
+        $this->authService->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }
