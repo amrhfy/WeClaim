@@ -99,9 +99,13 @@
                             <!-- Location Input Container -->
                             <div class="wgg-flex-col gap-2" id="location-input-container">
 
+                                <div class="info-box wgg-center-content">
+                                    <span><strong>Change Order -</strong> Drag the Location</span>
+                                </div>
+
                                 <!-- Location 1 -->
                                 <div class="wgg-flex-col gap-2" id="location-1">
-                                    <label for="location-1" class="form-label">Location 1</label>
+                                    <label for="location-1" class="form-label cursor-grab">Location 1</label>
                                     <input type="text" name="location-1" id="location-1" class="form-input location-input" placeholder="">
                                 </div>
 
