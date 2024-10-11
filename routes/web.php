@@ -30,8 +30,7 @@ Route::get('claims/new', function () {
     return view('claims.new');
 })->name('claims-new');
 
-Route::post('claims/new', [App\Http\Controllers\ClaimController::class , 'store'])
-->name('claims-new');
+Route::post('claims/new', [ClaimController::class, 'store'])->name('claims-new');
 
 Route::get('claims/approval', function () {
     return app('App\Http\Controllers\ClaimController')->index('claims.approval');

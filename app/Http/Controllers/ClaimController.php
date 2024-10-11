@@ -14,13 +14,26 @@ use Illuminate\Support\Facades\Mail;
 
 class ClaimController extends Controller
 {
+
+    //////////////////////////////////////////////////////////////////
+
     protected $claimService;
+    protected $mail;
+
+    private const ADMIN_EMAIL = 'admin@wegrow-global.com';
+    private const HR_EMAIL = 'hr@wegrow-global.com';
+    private const FINANCE_EMAIL = 'finance@wegrow-global.com';
+    private const TEST_EMAIL = 'ammar@wegrow-global.com';
+
+    //////////////////////////////////////////////////////////////////
 
     public function __construct(ClaimService $claimService)
     {
         $this->claimService = $claimService;
     }
 
+
+    //////////////////////////////////////////////////////////////////
 
     public function index($view)
     {
@@ -32,51 +45,39 @@ class ClaimController extends Controller
         return redirect()->route('login');
     }
 
+    //////////////////////////////////////////////////////////////////
+
     public function show($id, $view)
     {
-        $claim = Claim::findOrFail($id);
         return view($view, compact('claim'));
     }
-    
 
-    public function approve($token)
-    {
-        $claim = Claim::where('token', $token)->firstOrFail();
-        $claim->status = 'Approved';
-        $claim->save();
-
-        return redirect()->route('claims.index')->with('status', 'Claim approved successfully!');
-    }
-
-    public function reject($token)
-    {
-        $claim = Claim::where('token', $token)->firstOrFail();
-        $claim->status = 'Rejected';
-        $claim->save();
-
-        return redirect()->route('claims.index')->with('status', 'Claim rejected successfully!');
-    }
+    //////////////////////////////////////////////////////////////////
 
     public function store(StoreClaimRequest $request)
     {
-        Log::info('Starting the store method in ClaimController');
-        Log::info('Request data', ['request' => $request->all()]);
-        
-        $validatedData = $request->validated();
-        $user = Auth::user();
+        try {
 
-        DB::transaction(function () use ($validatedData, $user, $request) {
-            $claim = $this->claimService->createClaim($validatedData, $user);
-            $claim = $this->claimService->handleFileUploadsAndDocuments($claim, $request->file('toll_report'), $request->file('email_report'));
+            DB::transaction(function () use ($request) {
+                Log::info('Starting claim submission process');
 
-            Log::info('Attempting to send email for claim ID: ' . $claim->claim_id);
-            Mail::to('ammar@wegrow-global.com')->send(new ClaimActionMail($claim));
-            Log::info('Email sent for claim ID: ' . $claim->claim_id);
-        });
+                $validatedData = $request->validated();
+                $user = Auth::user();
+                $claim = $this->claimService->createClaim($validatedData, $user);
+                $claim = $this->claimService->handleFileUploadsAndDocuments($claim, $request->file('toll_report'), $request->file('email_report'));
 
-        return redirect()->route('claims.index')->with('success', 'Claim submitted successfully!');
+                $this->mail->to(self::ADMIN_EMAIL)->send(new ClaimActionMail($claim));
+            });
+
+            return redirect()->route('claims-dashboard')->with('success', 'Claim submitted successfully!');
+
+        } catch (\Exception $e) {
+
+            Log::error('Error submitting claim: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while submitting the claim. Please try again.');
+
+        }
     }
 
-
-
+    //////////////////////////////////////////////////////////////////
 }

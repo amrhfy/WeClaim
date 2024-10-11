@@ -6,27 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    
     /////////////////////////////////////////////////////////////
 
-    public function up(): void
+    public function up()
     {
-        Schema::create('claim_history', function (Blueprint $table) {
+        Schema::create('claim_locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('claim_id')->constrained('claim', 'id')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('action');
-            $table->text('details')->nullable();
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->references('id')->on('claim')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('location');
+            $table->integer('order');
             $table->timestamps();
+            $table->unique(['claim_id', 'order']);
         });
-        
     }
 
     /////////////////////////////////////////////////////////////
 
     public function down(): void
     {
-        Schema::dropIfExists('claim_history');
+        Schema::dropIfExists('claim_locations');
     }
 
     /////////////////////////////////////////////////////////////

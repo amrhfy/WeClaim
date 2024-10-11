@@ -8,7 +8,6 @@ console.log('form.js loaded and running');
 
 const MAP_CONFIG = {
     initialZoom: 14,
-    mapId: '9a9938cf82c50ad4',
     initialCenter: { lat: 3.0311070837055487, lng: 101.61629987586117 },
 };
 
@@ -22,11 +21,14 @@ class FormManager {
         this.locationCount = 1;
         this.markers = [];
         this.directionsService = null;
+        this.travelMode = 'DRIVING';
         this.directionsRenderer = null;
         this.geocodeCache = new Map();
         this.locationInputContainer = document.getElementById('location-input-container');
         this.addLocationBtn = document.getElementById('add-location-btn');
         this.removeLocationBtn = document.getElementById('remove-location-btn');
+        this.trafficLayer = null;
+        this.totalDistanceInput = document.getElementById('total-distance-input');
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -36,7 +38,6 @@ class FormManager {
             center: MAP_CONFIG.initialCenter,
             zoom: MAP_CONFIG.initialZoom,
             disableDefaultUI: true,
-            mapId: MAP_CONFIG.mapId,
         });
 
         this.directionsService = new google.maps.DirectionsService();
@@ -58,14 +59,103 @@ class FormManager {
     ///////////////////////////////////////////////////////////////////
 
     initMapControls() {
+        const controlDiv = document.createElement('div');
+        controlDiv.classList.add('wgg-flex-row', 'gap-2');
+        controlDiv.style.padding = '10px';
+
         this.clearRouteBtn = document.createElement('button');
         this.clearRouteBtn.textContent = 'Clear Route';
         this.clearRouteBtn.className = 'btn-primary';
-        this.clearRouteBtn.style.margin = '10px';
         this.clearRouteBtn.type = 'button';
         this.clearRouteBtn.disabled = true;
         this.clearRouteBtn.addEventListener('click', () => this.clearRoute());
-        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.clearRouteBtn);
+
+        this.reverseRouteBtn = document.createElement('button');
+        this.reverseRouteBtn.textContent = 'Reverse Route';
+        this.reverseRouteBtn.className = 'btn-primary';
+        this.reverseRouteBtn.type = 'button';
+        this.reverseRouteBtn.addEventListener('click', () => this.reverseRoute());
+
+        this.trafficToggleBtn = document.createElement('button');
+        this.trafficToggleBtn.textContent = 'Toggle Traffic';
+        this.trafficToggleBtn.className = 'btn-primary';
+        this.trafficToggleBtn.type = 'button';
+        this.trafficToggleBtn.addEventListener('click', () => this.toggleTrafficLayer());
+
+        controlDiv.appendChild(this.clearRouteBtn);
+        controlDiv.appendChild(this.reverseRouteBtn);
+        controlDiv.appendChild(this.trafficToggleBtn);
+    
+        this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    async updateMap() {
+        this.showLoading();
+        this.clearMarkers();
+        this.directionsRenderer.setDirections({routes: []});
+
+        const inputs = document.querySelectorAll('.location-input');
+        const waypoints = [];
+        const bounds = new google.maps.LatLngBounds();
+
+        let origin = null;
+        let destination = null;
+
+        try {
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                if (input.value) {
+                    try {
+                        const location = await this.geocodeAddress(input.value);
+                        if (location) {
+                            this.addMarker(location, i + 1);
+                            bounds.extend(location);
+
+                            if (i === 0) {
+                                origin = location;
+                            } else if (i === inputs.length - 1) {
+                                destination = location;
+                            } else {
+                                waypoints.push({
+                                    location: location,
+                                    stopover: true
+                                });
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error geocoding address:', error);
+                        this.showError(`Error: ${error.message}`);
+                    }
+                }
+            }
+
+            if (this.markers.length > 0) {
+                this.map.setCenter(this.markers[0].getPosition());
+                this.map.setZoom(15);
+            }
+
+            if (origin && destination) {
+                const request = {
+                    origin: origin,
+                    destination: destination,
+                    waypoints: waypoints,
+                    travelMode: google.maps.TravelMode[this.travelMode.toUpperCase()]
+                };
+
+                const result = await this.directionsService.route(request);
+                this.directionsRenderer.setDirections(result);
+                this.map.fitBounds(bounds);
+                this.addSegmentInfoBoxes(result.routes[0]);
+                this.clearRouteBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Error updating map:', error);
+            this.showError('An error occurred while updating the map. Please try again.');
+        } finally {
+            this.hideLoading();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,35 +193,34 @@ class FormManager {
     ///////////////////////////////////////////////////////////////////
 
     addMarker(location, number) {
-        const color = MARKER_COLORS[number % MARKER_COLORS.length];
-        const markerElement = this.createMarkerElement(color, number);
-
-        const advancedMarker = new google.maps.marker.AdvancedMarkerElement({
-            map: this.map,
+        const marker = new google.maps.Marker({
             position: location,
-            content: markerElement
+            map: this.map,
+            label: {
+                text: number.toString(),
+                color: 'white'
+            },
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: MARKER_COLORS[number % MARKER_COLORS.length],
+                fillOpacity: 1,
+                strokeWeight: 0,
+                scale: 10
+            }
         });
-
-        this.markers.push(advancedMarker);
+        this.markers.push(marker);
     }
 
     ///////////////////////////////////////////////////////////////////
 
-    createMarkerElement(color, number) {
-        const markerElement = document.createElement('div');
-        markerElement.setAttribute('role', 'img');
-        markerElement.setAttribute('aria-label', `Location marker ${number}`);
-        markerElement.style.backgroundColor = color;
-        markerElement.style.borderRadius = '50%';
-        markerElement.style.width = '28px';
-        markerElement.style.height = '28px';
-        markerElement.style.display = 'flex';
-        markerElement.style.alignItems = 'center';
-        markerElement.style.justifyContent = 'center';
-        markerElement.style.color = 'white';
-        markerElement.style.fontWeight = 'bold';
-        markerElement.textContent = number.toString();
-        return markerElement;
+    toggleTrafficLayer() {
+        if (this.trafficLayer) {
+            this.trafficLayer.setMap(null);
+            this.trafficLayer = null;
+        } else {
+            this.trafficLayer = new google.maps.TrafficLayer();
+            this.trafficLayer.setMap(this.map);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,9 +246,17 @@ class FormManager {
             animation: 150,
             onEnd: () => {
                 this.updateLocationLabels();
+                this.updateLocationCount();
+                this.updateRemoveButtonState();
                 this.updateMap();
             }
         });
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    updateLocationCount() {
+        this.locationCount = this.locationInputContainer.children.length;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,61 +270,13 @@ class FormManager {
 
     ///////////////////////////////////////////////////////////////////
 
-    async updateMap() {
-        this.showLoading();
-        this.clearMarkers();
-        this.directionsRenderer.setDirections({routes: []});
-
+    reverseRoute() {
         const inputs = document.querySelectorAll('.location-input');
-        const waypoints = [];
-        const bounds = new google.maps.LatLngBounds();
-
-        let origin = null;
-        let destination = null;
-
-        try {
-            for (let i = 0; i < inputs.length; i++) {
-                const input = inputs[i];
-                if (input.value) {
-                    const location = await this.geocodeAddress(input.value);
-                    if (location) {
-                        this.addMarker(location, i + 1);
-                        bounds.extend(location);
-
-                        if (i === 0) {
-                            origin = location;
-                        } else if (i === inputs.length - 1) {
-                            destination = location;
-                        } else {
-                            waypoints.push({
-                                location: location,
-                                stopover: true
-                            });
-                        }
-                    }
-                }
-            }
-
-            if (origin && destination) {
-                const request = {
-                    origin: origin,
-                    destination: destination,
-                    waypoints: waypoints,
-                    travelMode: 'DRIVING'
-                };
-
-                const result = await this.directionsService.route(request);
-                this.directionsRenderer.setDirections(result);
-                this.map.fitBounds(bounds);
-                this.addSegmentInfoBoxes(result.routes[0]);
-                this.clearRouteBtn.disabled = false;
-            }
-        } catch (error) {
-            console.error('Error updating map:', error);
-            this.showError('An error occurred while updating the map. Please try again.');
-        } finally {
-            this.hideLoading();
-        }
+        const values = Array.from(inputs).map(input => input.value).reverse();
+        inputs.forEach((input, index) => {
+            input.value = values[index];
+        });
+        this.updateMap();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -264,12 +313,15 @@ class FormManager {
             panel.appendChild(segment);
         }
     
-        // Add total distance at the bottom
         const totalDistance = route.legs.reduce((total, leg) => total + leg.distance.value, 0);
-        const totalDistanceKm = (totalDistance / 1000).toFixed(1);
+        const totalDistanceKm = (totalDistance / 1000).toFixed(2);
         const totalDuration = route.legs.reduce((total, leg) => total + leg.duration.value, 0);
         const totalHours = Math.floor(totalDuration / 3600);
         const totalMinutes = Math.floor((totalDuration % 3600) / 60);
+
+        console.log('Total Distance (km):', totalDistanceKm);
+
+        document.getElementById('total-distance-input').value = totalDistanceKm;
     
         const totalInfo = document.createElement('div');
         totalInfo.style.borderTop = '1px solid #ccc';
@@ -277,7 +329,8 @@ class FormManager {
         totalInfo.style.marginTop = '10px';
         totalInfo.innerHTML = `
             <strong>Total Distance:</strong> ${totalDistanceKm} km<br>
-            <strong>Total Duration:</strong> ${totalHours}h ${totalMinutes}m
+            <strong>Total Duration:</strong> ${totalHours}h ${totalMinutes}m<br>
+            <strong>Total Cost:</strong> RM${(totalDistanceKm * 0.6).toFixed(2)}
         `;
         panel.appendChild(totalInfo);
     
@@ -315,7 +368,7 @@ class FormManager {
             return this.geocodeCache.get(address);
         }
         
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
                 if (status === 'OK' && results[0]) {
@@ -323,7 +376,7 @@ class FormManager {
                     this.geocodeCache.set(address, location);
                     resolve(location);
                 } else {
-                    resolve(null);
+                    reject(new Error(`Geocoding failed for address: ${address}`));
                 }
             });
         });
@@ -346,7 +399,15 @@ class FormManager {
 
         this.updateRemoveButtonState();
         this.attachInputListeners();
-        this.updateMap();
+
+        if (this.markers.length > 0) {
+            const currentBounds = this.map.getBounds();
+            this.updateMap().then(() => {
+                if (currentBounds) {
+                    this.map.fitBounds(currentBounds);
+                }
+            });
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -380,6 +441,17 @@ class FormManager {
         loadingElement.id = 'loading-indicator';
         loadingElement.textContent = 'Loading...';
         document.body.appendChild(loadingElement);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    showError(message) {
+        const errorElement = document.createElement('div');
+        errorElement.id = 'error-message';
+        errorElement.textContent = message;
+        errorElement.style.color = 'red';
+        document.body.appendChild(errorElement);
+        setTimeout(() => errorElement.remove(), 5000);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -444,9 +516,19 @@ class FormManager {
 
 }
 
+//////////////////////////////////////////////////////////////////////
+
+function clearInputsOnReload() {
+    const inputs = document.querySelectorAll('.location-input');
+    inputs.forEach(input => {
+        input.value = '';
+    });
+}
+
 ///////////////////////////////////////////////////////////////////////
 
 document.addEventListener('DOMContentLoaded', () => {
+    clearInputsOnReload();
     const formManager = new FormManager();
     formManager.init();
 });

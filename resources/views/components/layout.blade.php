@@ -1,6 +1,6 @@
 @include('components.header')
 
-    <div class="flex">
+    <div class="flex h-screen">
         <!-----! Navigation Sidebar !---->
         <div class="navbar-container">
            @include('components.navbar')
@@ -8,7 +8,7 @@
 
 
         <!-----! Content Here !---->
-        <div class="content">
+        <div class="content-container">
             {{ $slot }}
         </div>
     </div>

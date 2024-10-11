@@ -6,11 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
+    //////////////////////////////////////////////////////////////////
+
     public function up(): void
     {
+
+        /////////////////////////////////////////////////////////////
+
+        Schema::create('departments', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        /////////////////////////////////////////////////////////////
+
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        /////////////////////////////////////////////////////////////
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
@@ -18,21 +37,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // A role enum for staff, admin, hr, finance
-            $table->enum('role', ['Staff', 'Admin', 'HR', 'Finance', 'SU']);
-            // A department enum for:
-            // -> Administration
-            // -> Human Resources
-            // -> Finance and Account
-            // -> Marketing
-            // -> Sales
-            // -> IT and Technical
-            // -> Procurement and Assets
-            // -> Retails
-            $table->enum('department', ['Administration', 'Human Resources', 'Finance and Account', 'Marketing', 'Sales', 'IT and Technical', 'Procurement and Assets', 'Retails', 'All']);
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
+
+        /////////////////////////////////////////////////////////////
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
