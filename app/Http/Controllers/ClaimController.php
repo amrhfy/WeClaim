@@ -18,7 +18,6 @@ class ClaimController extends Controller
     //////////////////////////////////////////////////////////////////
 
     protected $claimService;
-    protected $mail;
 
     private const ADMIN_EMAIL = 'admin@wegrow-global.com';
     private const HR_EMAIL = 'hr@wegrow-global.com';
@@ -38,6 +37,7 @@ class ClaimController extends Controller
     public function index($view)
     {
         if (Auth::check()) {
+            $user = Auth::user();
             $claims = Claim::with('user')->where('user_id', Auth::id())->get();
             return view($view, compact('claims'));
         }
@@ -49,6 +49,7 @@ class ClaimController extends Controller
 
     public function show($id, $view)
     {
+        $claim = Claim::findOrFail($id);
         return view($view, compact('claim'));
     }
 
@@ -66,10 +67,10 @@ class ClaimController extends Controller
                 $claim = $this->claimService->createClaim($validatedData, $user);
                 $claim = $this->claimService->handleFileUploadsAndDocuments($claim, $request->file('toll_report'), $request->file('email_report'));
 
-                $this->mail->to(self::ADMIN_EMAIL)->send(new ClaimActionMail($claim));
+                Mail::to(self::ADMIN_EMAIL)->send(new ClaimActionMail($claim));
             });
 
-            return redirect()->route('claims-dashboard')->with('success', 'Claim submitted successfully!');
+            return redirect()->route('claims.dashboard')->with('success', 'Claim submitted successfully!');
 
         } catch (\Exception $e) {
 
@@ -77,6 +78,70 @@ class ClaimController extends Controller
             return redirect()->back()->with('error', 'An error occurred while submitting the claim. Please try again.');
 
         }
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    
+    public function approvalScreen()
+    {
+        Log::info('Approval screen accessed by user: ' . Auth::id());
+
+        $claims = Claim::with('user')->get();
+        
+        $user = Auth::user();
+        if ($user->role->name === 'staff') {
+            return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
+        }
+    
+        $claims = $this->claimService->getClaimsBasedOnRole($user);
+        return view('claims.approval', compact('claims'), ['claims' => $claims, 'claimService' => $this->claimService]);
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    public function reviewClaim($id)
+    {
+        $user = Auth::user();
+        $claim = Claim::findOrFail($id);
+
+        if (!$this->claimService->canReviewClaim($user, $claim)) {
+            return redirect()->route('claims.approval')->with('error', 'You do not have permission to review this claim.');
+        }
+
+        return view('claims.review', compact('claim'));
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    
+    public function approveClaim($id)
+    {
+        $user = Auth::user();
+        $claim = Claim::findOrFail($id);
+
+        if (!$this->claimService->canReviewClaim($user, $claim)) {
+            return redirect()->route('claims.approval')->with('error', 'You do not have permission to approve this claim.');
+        }
+
+        $updatedClaim = $this->claimService->approveClaim($user, $claim);
+
+        // Send email notifications based on the new status
+        switch ($updatedClaim->status) {
+            case Claim::STATUS_APPROVED_ADMIN:
+                Mail::to(self::ADMIN_EMAIL)->send(new ClaimActionMail($updatedClaim));
+                break;
+            case Claim::STATUS_APPROVED_DATUK:
+                Mail::to(self::HR_EMAIL)->send(new ClaimActionMail($updatedClaim));
+                break;
+            case Claim::STATUS_APPROVED_HR:
+            case Claim::STATUS_APPROVED_FINANCE:
+            case Claim::STATUS_DONE:
+                Mail::to(self::FINANCE_EMAIL)->send(new ClaimActionMail($updatedClaim));
+                break;
+        }
+
+        return redirect()->route('claims.approval')->with('success', 'Claim approved successfully.');
     }
 
     //////////////////////////////////////////////////////////////////

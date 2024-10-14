@@ -7,6 +7,7 @@ use App\Models\Claim;
 use App\Models\ClaimDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
 use Str;
 
 class ClaimService
@@ -14,7 +15,6 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-    protected $log;
     private const PETROL_RATE = 0.6;
     private const CLAIM_TYPE_PETROL = 'Petrol';
     private const CLAIM_TYPE_ITEMS = 'Items';
@@ -24,9 +24,9 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-    public function __construct(Log $log)
+    public function __construct()
     {
-        $this->log = $log;
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ class ClaimService
         $claim->submitted_at = now();
         $claim->claim_company = strtoupper($data['claim_company']);
         $claim->toll_amount = $data['toll_amount'];
-        $claim->total_distance = $data['total_distance_input'];
+        $claim->total_distance = $data['total_distance'];
         $claim->from_location = $data['location'][0] ?? null;
         $claim->to_location = end($data['location']) ?? null;
         $claim->date_from = $data['date_from'];
@@ -106,7 +106,7 @@ class ClaimService
 
         $fileName = time() . "_{$prefix}_" . $file->getClientOriginalName();
         $filePath = $file->storeAs($path, $fileName, 'public');
-        $this->log->info("{$prefix} report uploaded", ['file_name' => $fileName]);
+        Log::info("{$prefix} report uploaded", ['file_name' => $fileName]);
 
         return ['fileName' => $fileName, 'filePath' => $filePath];
     }
@@ -122,10 +122,10 @@ class ClaimService
 
     public function createClaim(array $data, User $user)
     {
-        $this->log->info('ClaimService@createClaim method called', ['data' => $data]);
+        Log::info('ClaimService@createClaim method called', ['data' => $data]);
 
         try {
-            $totalDistance = $data['total_distance_input'];
+            $totalDistance = $data['total_distance'];
             $totalAmount = $this->calculateTotalAmount($totalDistance);
 
             $claim = $this->buildClaim($data, $user, $totalAmount);
@@ -136,16 +136,75 @@ class ClaimService
             $claim->title = 'Petrol Claim - ' . $claim->claim_company;
             $claim->save();
 
-            $this->log->info('Claim saved', ['id' => $claim->id]);
+            Log::info('Claim saved', ['id' => $claim->id]);
 
             return $claim;
 
         } catch (\Exception $e) {
 
-            $this->log->error('Error creating claim: ' . $e->getMessage());
+            Log::info('Error creating claim: ' . $e->getMessage());
             throw $e;
 
         }
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    public function getClaimsBasedOnRole(User $user)
+    {
+        switch ($user->role->name) {
+            case 'admin':
+                return Claim::with('user')->whereIn('status', [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN])->get();
+            case 'hr':
+                return Claim::with('user')->where('status', Claim::STATUS_APPROVED_DATUK)->get();
+            case 'finance':
+                return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_HR, Claim::STATUS_APPROVED_FINANCE])->get();
+            default:
+                return Claim::with('user')->where('user_id', $user->id)->get();
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////
+
+    public function canReviewClaim(User $user, Claim $claim)
+    {
+        switch ($user->role->name) {
+            case 'Admin':
+                return in_array($claim->status, [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN]);
+            case 'HR':
+                return $claim->status === Claim::STATUS_APPROVED_DATUK;
+            case 'Finance':
+                return in_array($claim->status, [Claim::STATUS_APPROVED_HR, Claim::STATUS_APPROVED_FINANCE]);
+            default:
+                return false;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+
+    public function approveClaim(User $user, Claim $claim)
+    {
+        switch ($user->role->name) {
+            case 'admin':
+                if ($claim->status === Claim::STATUS_SUBMITTED) {
+                    $claim->status = Claim::STATUS_APPROVED_ADMIN;
+                } elseif ($claim->status === Claim::STATUS_APPROVED_ADMIN) {
+                    $claim->status = Claim::STATUS_APPROVED_DATUK;
+                }
+                break;
+            case 'hr':
+                $claim->status = Claim::STATUS_APPROVED_HR;
+                break;
+            case 'finance':
+                if ($claim->status === Claim::STATUS_APPROVED_HR) {
+                    $claim->status = Claim::STATUS_APPROVED_FINANCE;
+                } elseif ($claim->status === Claim::STATUS_APPROVED_FINANCE) {
+                    $claim->status = Claim::STATUS_DONE;
+                }
+                break;
+        }
+        $claim->save();
+        return $claim;
     }
 
     //////////////////////////////////////////////////////////////////

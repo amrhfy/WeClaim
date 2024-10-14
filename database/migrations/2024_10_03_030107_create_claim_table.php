@@ -17,7 +17,14 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('petrol_amount', 10, 2);
-            $table->string('status')->default('Submitted')->index();
+            $table->enum('status', [
+                'Submitted',
+                'Approved_Admin',
+                'Approved_Datuk',
+                'Approved_HR',
+                'Approved_Finance',
+                'Done',
+            ])->default('Submitted')->index();
             $table->string('claim_type', 10)->default('Others')->index();
             $table->decimal('total_distance', 10, 2);
             $table->timestamp('submitted_at')->nullable();

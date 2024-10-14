@@ -25,12 +25,16 @@ input[type="number"] {
 
     /* Button Classes */
 
-    .btn-primary, .btn-blue, .btn-danger, .btn-green {
-        @apply font-wgg text-white text-xs font-semibold py-2 px-4 rounded-lg cursor-pointer gap-2 transition-all ease-in-out;
+    .btn-primary, .btn-blue, .btn-danger, .btn-green, .btn-back {
+        @apply wgg-center-content font-wgg text-white text-xs font-semibold py-2 px-4 rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit;
+    }
+
+    .btn-back {
+        @apply bg-wgg-black-950 hover:bg-wgg-black-600;
     }
 
     .btn-primary {
-        @apply bg-black hover:bg-gray-800;
+        @apply bg-wgg-black-950 hover:bg-wgg-black-600;
     }
 
     .btn-blue {
@@ -145,12 +149,44 @@ input[type="number"] {
         @apply *:text-sm *:font-normal *:font-wgg *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out;
     }
 
-    .claims-approval-status-badge-admin {
-        @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg bg-orange-500;
+    .claim-status-badge {
+        @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg wgg-center-content;
     }
 
-    .claims-approval-action-button {
-        @apply flex justify-center items-center gap-2 py-1 px-4 bg-wgg-black-950 text-wgg-white rounded-lg hover:bg-wgg-black-600 transition-all ease-in-out;
+    .claim-status-badge-admin {
+        @apply bg-orange-400;
+    }
+
+    .claim-status-badge-admin {
+        @apply bg-cyan-500;
+    }
+
+    .claim-status-badge-hr {
+        @apply bg-blue-400;
+    }
+
+    .claim-status-badge-finance {
+        @apply bg-slate-500;
+    }
+
+    .claim-status-badge-payment {
+        @apply bg-teal-500;
+    }
+
+    .claim-status-badge-done {
+        @apply bg-green-500;
+    }
+
+    .claim-status-badge-red {
+        @apply bg-red-500;
+    }
+
+    /*****************************/
+
+    /* Claim Review Classes */
+
+    .claim-review-container {
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
 
 
@@ -166,12 +202,26 @@ input[type="number"] {
         @apply *:font-normal *:font-wgg *:text-xs *:text-wgg-black-400 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10;
     }
 
+    .claims-dashboard-table-row, .claims-approval-table-row {
+        @apply *:font-normal *:font-wgg *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out;
+    }
+
     .claims-dashboard-table-row {
-        @apply *:font-normal *:font-wgg *:text-sm *:text-wgg-black-950 *:text-left *:py-3 *:px-4 border-b border-b-wgg-border/10 transition-all ease-in-out hover:bg-wgg-black-100;
+        @apply hover:bg-wgg-black-100;
     }
 
     .claims-dashboard-status-badge {
         @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg;
+    }
+
+    /* Claims Approval Classes */
+
+    .claims-approval-action-button {
+        @apply wgg-center-content bg-green-500 hover:bg-green-700 text-white font-normal px-3 py-1 gap-2 rounded-lg transition-all ease-in-out;
+    }
+
+    .claims-review-action-button {
+        @apply wgg-center-content bg-orange-500 hover:bg-orange-700 text-white font-normal px-3 py-1 gap-2 rounded-lg transition-all ease-in-out;
     }
 
 

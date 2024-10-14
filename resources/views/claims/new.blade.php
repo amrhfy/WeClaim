@@ -10,7 +10,7 @@
         <!-- Claims Form Container -->
 
         <div>
-            <form class="wgg-flex-col gap-6" action="{{ route('claims-new') }}" method="POST" enctype="multipart/form-data">
+            <form class="wgg-flex-col gap-6" action="{{ route('claims.new') }}" method="POST" enctype="multipart/form-data">
                 @csrf
             
                 <!-- Date & Map Container -->
@@ -123,7 +123,7 @@
                             </div>
 
                             <!-- Hidden Total Distance Input -->
-                            <input type="hidden" name="total_distance_input" id="total-distance-input">
+                            <input type="hidden" name="total_distance" id="total-distance-input">
 
 
                         </div>

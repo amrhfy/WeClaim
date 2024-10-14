@@ -1,6 +1,6 @@
 <x-layout>
     <main>
-        <a href="{{ route('claims-dashboard') }}">Back</a>
+        <a href="{{ route('claims.dashboard') }}">Back</a>
 
         <h1>{{ $claim->title }}</h1>
 
