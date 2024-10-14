@@ -45,7 +45,7 @@ use App\Models\Claim;
                                 <th>{{ $claim->petrol_amount }}</th>
                                 <th>{{ $claim->toll_amount }}</th>
                                 <th class="flex">
-                                    <span class="claims-dashboard-status-badge w-fit
+                                    <span class="claims-dashboard-status-badge
                                     @if ($claim->status == Claim::STATUS_SUBMITTED)
                                         bg-orange-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-1-circle-fill" viewBox="0 0 16 16">
@@ -81,23 +81,23 @@ use App\Models\Claim;
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>
-                                        Done
+                                        Payment
                                     @endif
                                     </span>
                                     <td>
-                                        <span class="claims-dashboard-status-badge w-fit
+                                        <span class="w-fit font-medium underline">
                                             @if ($claim->status == Claim::STATUS_SUBMITTED)
-                                                bg-orange-500">Admin Review
+                                                Admin Review
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_ADMIN)
-                                                bg-yellow-500">Datuk Approval
+                                                bDatuk Approval
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_DATUK)
-                                                bg-blue-500">HR Review
+                                            HR Review
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_HR)
-                                                bg-purple-500">Finance Review
+                                                bFinance Review
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_FINANCE)
-                                                bg-indigo-500">Payment Processing
+                                                bPayment Processing
                                             @elseif ($claim->status == Claim::STATUS_DONE)
-                                                bg-green-500">Completed
+                                                Completed
                                             @endif
                                         </span>
                                     </td>

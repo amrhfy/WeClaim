@@ -1,21 +1,21 @@
 <x-layout>
 
-    <div class="claim-review-container">
+    <div class="claim-review-container gap-8">
 
-        <a class="btn-back" href="{{ route('claims.approval') }}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-            </svg>    
-            Back
-        </a>
-
-        <div class="wgg-flex-col gap-2 bg-red-500 text-wgg-white p-4 rounded-lg">
-            <span class="text-xs">Dumping Data: Testing Purpose</span>
+        {{-- Header Titles --}}
+        <div class="wgg-flex-row gap-2 m-4 justify-between">
+            <a class="btn-back" href="{{ route('claims.approval') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                </svg>    
+                Back
+            </a>
+            <span class="text-2xl font-semibold text-wgg-black-200">Currently Viewing Claim ID {{ $claim->id }}</span>
         </div>
 
         {{-- Basic Details --}}
 
-        <div class="review-container">
+        <div class="wgg-flex-col gap-4">
             <div class="wgg-flex-col gap-2">
                 <span class="review-table-title">Basic Details</span>
                 <table>
@@ -63,7 +63,7 @@
                             <td>
                                 <a href="{{ route('claims.view.document', ['claim' => $claim->id, 'type' => 'toll', 'filename' => $claim->documents->where('toll_file_name', '!=', null)->first()->toll_file_name ?? 'no-file']) }}" target="_blank" class="btn-view-doc">
                                 View Toll Document
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
                                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
                                 </svg>
@@ -75,7 +75,7 @@
                             <td>
                                 <a href="{{ route('claims.view.document', ['claim' => $claim->id, 'type' => 'email', 'filename' => $claim->documents->where('toll_file_name', '!=', null)->first()->toll_file_name ?? 'no-file']) }}" target="_blank" class="btn-view-doc">
                                 View Email Document
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
                                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
                                 </svg>
@@ -88,7 +88,7 @@
 
         {{-- Trip Details --}}
 
-        <div class="wgg-flex-col gap-2">
+        <div class="wgg-flex-col gap-4">
             <span class="review-table-title">Trip Details</span>
             <table class="text-left">
                 <tbody>
@@ -118,7 +118,7 @@
         </div>
 
         <!-- Remarks -->
-        <form action="" class="wgg-flex-col gap-2">
+        <form action="" class="wgg-flex-col gap-4">
             <div class="wgg-flex-col gap-2">
                 <label for="remarks" class="form-label-other">Remarks</label>
                 <textarea class="form-input" name="remarks" id="remarks" cols="30" rows="5">{{ old('remarks') }}</textarea>

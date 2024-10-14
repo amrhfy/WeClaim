@@ -43,7 +43,7 @@ input[type="number"] {
 
     /* Button Classes */
     .btn-view-doc {
-        @apply wgg-center-content font-wgg text-wgg-black-950 text-sm font-medium rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit underline;
+        @apply wgg-center-content font-wgg text-wgg-black-950 text-sm font-medium rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit underline hover:text-red-400;
     }
 
     .btn-primary, .btn-blue, .btn-danger, .btn-green, .btn-back {
@@ -137,12 +137,16 @@ input[type="number"] {
 
     /* Review Page Classes */
 
+    .claim-review-container {
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
+    }
+
     .review-container {
         @apply wgg-flex-col gap-10 w-full;
     }
 
     .review-dashboard-table-content {
-        @apply w-full flex flex-row gap-5 p-4 drop-shadow-md *:font-normal *:font-wgg text-left border-b border-wgg-border items-center;
+        @apply w-full flex flex-row gap-5 p-4 *:font-normal *:font-wgg text-left border-b border-wgg-border items-center;
 
         th {
             @apply text-left w-1/4 font-normal text-sm text-wgg-black-400 ;
@@ -153,20 +157,31 @@ input[type="number"] {
         }
     }
 
-    .review-modal {
-        @apply hidden fixed left-0 top-0 w-full h-full overflow-auto bg-opacity-30 bg-wgg-black-950;
-    }
-
-    .review-modal-content {
-        @apply p-10 border border-wgg-border bg-wgg-white rounded-lg drop-shadow-md;
-    }
-
-    .review-modal-close {
-
-    }
-
-
     .review-table-title {
+        @apply font-semibold font-wgg text-wgg-black-950 text-xl pl-4;
+    }
+
+    /*****************************/
+
+    /* Individual Claim Page Classes */
+
+    .claim-indv-container {
+        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
+    }
+
+    .claim-indv-dashboard-table-content {
+        @apply w-full flex flex-row gap-5 p-4 *:font-normal *:font-wgg text-left border-b border-wgg-border items-center;
+
+        th {
+            @apply text-left w-1/4 font-normal text-sm text-wgg-black-400 ;
+        }
+
+        td {
+            @apply text-left w-3/4 text-sm text-wgg-black-950 font-medium;
+        }
+    }
+    
+    .claim-indv-table-title {
         @apply font-semibold font-wgg text-wgg-black-950 text-xl pl-4;
     }
 
@@ -193,6 +208,10 @@ input[type="number"] {
 
     #new-claim {
         @apply bg-green-500 hover:bg-green-600;
+    }
+
+    .profile-container {
+        @apply w-full flex flex-col gap-2 p-4 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
 
     /*****************************/
@@ -244,15 +263,6 @@ input[type="number"] {
 
     /*****************************/
 
-    /* Claim Review Classes */
-
-    .claim-review-container {
-        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
-    }
-
-
-    /*****************************/
-
     /* Claims Dashboard Classes */
 
     .claims-dashboard-container {
@@ -272,7 +282,7 @@ input[type="number"] {
     }
 
     .claims-dashboard-status-badge {
-        @apply inline-flex justify-start items-center w-28 px-3 py-1 gap-2 text-wgg-white rounded-lg;
+        @apply w-fit inline-flex justify-start items-center px-3 py-1 gap-2 text-wgg-white rounded-lg;
     }
 
     /* Claims Approval Classes */
