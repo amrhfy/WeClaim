@@ -42,3 +42,7 @@ Route::get('claims/{id}', function ($id) {
 Route::get('/claims/{id}/review', [App\Http\Controllers\ClaimController::class, 'reviewClaim'])->name('claims.review');
 
 Route::post('/claims/{id}/approve', [App\Http\Controllers\ClaimController::class, 'approveClaim'])->name('claims.approve');
+
+// All Review Routes
+Route::get('claims/{claim}/document/{type}/{filename}', [ClaimController::class, 'viewDocument'])
+    ->name('claims.view.document');

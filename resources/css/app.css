@@ -19,11 +19,32 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+/* Media Queries */
+
+@media (max-width: 1280px) {
+    .lay-left {
+        @apply hidden;
+    }
+
+    .content-container {
+        @apply ml-0 w-full;
+    }
+}
+
+@media (min-width: 1281px) {
+    .lay-left {
+        @apply block;
+    }
+}
+
 /* Navigation Bar */
 
 @layer components {
 
     /* Button Classes */
+    .btn-view-doc {
+        @apply wgg-center-content font-wgg text-wgg-black-950 text-sm font-medium rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit underline;
+    }
 
     .btn-primary, .btn-blue, .btn-danger, .btn-green, .btn-back {
         @apply wgg-center-content font-wgg text-white text-xs font-semibold py-2 px-4 rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit;
@@ -52,7 +73,7 @@ input[type="number"] {
     /* Main or Utilities Classes */
 
     .content-container {
-        @apply ml-16 md:ml-64 py-14 px-4 md:px-20 w-full;
+        @apply md:ml-64 md:px-20 w-full p-20 h-auto;
     }
 
     .main {
@@ -98,6 +119,10 @@ input[type="number"] {
     .form-label {
         @apply text-xs text-wgg-black-300 font-wgg font-normal cursor-pointer;
     }
+
+    .form-label-other {
+        @apply text-sm text-wgg-black-400 font-wgg font-normal;
+    }
     
     .progress-container {
         @apply w-full bg-gray-200 rounded-full h-2.5 mt-2;
@@ -108,6 +133,42 @@ input[type="number"] {
     }
 
 
+    /*****************************/
+
+    /* Review Page Classes */
+
+    .review-container {
+        @apply wgg-flex-col gap-10 w-full;
+    }
+
+    .review-dashboard-table-content {
+        @apply w-full flex flex-row gap-5 p-4 drop-shadow-md *:font-normal *:font-wgg text-left border-b border-wgg-border items-center;
+
+        th {
+            @apply text-left w-1/4 font-normal text-sm text-wgg-black-400 ;
+        }
+
+        td {
+            @apply text-left w-3/4 text-sm text-wgg-black-950 font-medium;
+        }
+    }
+
+    .review-modal {
+        @apply hidden fixed left-0 top-0 w-full h-full overflow-auto bg-opacity-30 bg-wgg-black-950;
+    }
+
+    .review-modal-content {
+        @apply p-10 border border-wgg-border bg-wgg-white rounded-lg drop-shadow-md;
+    }
+
+    .review-modal-close {
+
+    }
+
+
+    .review-table-title {
+        @apply font-semibold font-wgg text-wgg-black-950 text-xl pl-4;
+    }
 
 
     /*****************************/

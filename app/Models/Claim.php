@@ -46,7 +46,7 @@ class Claim extends Model
 
     public function locations()
     {
-        return $this->belongsTo(ClaimLocation::class);
+        return $this->hasMany(ClaimLocation::class, 'claim_id');
     }
 
     public function documents()

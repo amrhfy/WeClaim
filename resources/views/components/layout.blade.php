@@ -1,14 +1,14 @@
 @include('components.header')
 
-    <div class="flex h-screen">
+    <div class="flex">
         <!-----! Navigation Sidebar !---->
-        <div class="navbar-container">
+        <div class="navbar-container lay-left">
            @include('components.navbar')
         </div>
 
 
         <!-----! Content Here !---->
-        <div class="content-container">
+        <div class="content-container lay-right">
             {{ $slot }}
         </div>
     </div>

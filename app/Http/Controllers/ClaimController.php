@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClaimRequest;
 use App\Models\Claim;
 use App\Mail\ClaimActionMail;
+use App\Models\ClaimLocation;
 use App\Services\ClaimService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Storage;
 
 
 class ClaimController extends Controller
@@ -18,6 +21,7 @@ class ClaimController extends Controller
     //////////////////////////////////////////////////////////////////
 
     protected $claimService;
+    use AuthorizesRequests;
 
     private const ADMIN_EMAIL = 'admin@wegrow-global.com';
     private const HR_EMAIL = 'hr@wegrow-global.com';
@@ -100,14 +104,16 @@ class ClaimController extends Controller
 
     //////////////////////////////////////////////////////////////////
 
+
     public function reviewClaim($id)
     {
         $user = Auth::user();
-        $claim = Claim::findOrFail($id);
+        $claim = Claim::with('locations')->findOrFail($id);
 
         if (!$this->claimService->canReviewClaim($user, $claim)) {
             return redirect()->route('claims.approval')->with('error', 'You do not have permission to review this claim.');
         }
+    
 
         return view('claims.review', compact('claim'));
     }
@@ -143,6 +149,26 @@ class ClaimController extends Controller
 
         return redirect()->route('claims.approval')->with('success', 'Claim approved successfully.');
     }
+
+    public function viewDocument(Claim $claim, $type)
+    {
+
+        $document = $claim->documents()->first();
+    
+        if (!$document) {
+            abort(404, 'Document not found');
+        }
+    
+        $filePath = storage_path('app/public/' . $document->{$type . '_file_path'});
+    
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+    
+        return response()->file($filePath);
+    }
+    
+    
 
     //////////////////////////////////////////////////////////////////
 }

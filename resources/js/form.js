@@ -146,6 +146,7 @@ class FormManager {
 
                 const result = await this.directionsService.route(request);
                 this.directionsRenderer.setDirections(result);
+                
                 this.map.fitBounds(bounds);
                 this.addSegmentInfoBoxes(result.routes[0]);
                 this.clearRouteBtn.disabled = false;
@@ -314,7 +315,7 @@ class FormManager {
         }
     
         const totalDistance = route.legs.reduce((total, leg) => total + leg.distance.value, 0);
-        const totalDistanceKm = (totalDistance / 1000).toFixed(2);
+        const totalDistanceKm = Math.floor(totalDistance / 10) / 100;
         const totalDuration = route.legs.reduce((total, leg) => total + leg.duration.value, 0);
         const totalHours = Math.floor(totalDuration / 3600);
         const totalMinutes = Math.floor((totalDuration % 3600) / 60);
@@ -328,7 +329,7 @@ class FormManager {
         totalInfo.style.paddingTop = '10px';
         totalInfo.style.marginTop = '10px';
         totalInfo.innerHTML = `
-            <strong>Total Distance:</strong> ${totalDistanceKm} km<br>
+            <strong>Total Distance:</strong> ${totalDistanceKm.toFixed(2)} km<br>
             <strong>Total Duration:</strong> ${totalHours}h ${totalMinutes}m<br>
             <strong>Total Cost:</strong> RM${(totalDistanceKm * 0.6).toFixed(2)}
         `;

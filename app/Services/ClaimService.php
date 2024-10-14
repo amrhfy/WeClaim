@@ -43,7 +43,7 @@ class ClaimService
         $claim->submitted_at = now();
         $claim->claim_company = strtoupper($data['claim_company']);
         $claim->toll_amount = $data['toll_amount'];
-        $claim->total_distance = $data['total_distance'];
+        $claim->total_distance = number_format((float)$data['total_distance'], 2, '.', '');
         $claim->from_location = $data['location'][0] ?? null;
         $claim->to_location = end($data['location']) ?? null;
         $claim->date_from = $data['date_from'];
@@ -78,7 +78,7 @@ class ClaimService
 
     public function handleFileUploadsAndDocuments($claim, $tollReport, $emailReport)
     {
-        Storage::disk('public')->makeDirectory('uploads/claims/toll');
+        Storage::disk('public')->makeDirectory('uploads/claims/toll/');
         Storage::disk('public')->makeDirectory('uploads/claims/email');
 
         $tollFileInfo = $this->uploadFile($tollReport, 'uploads/claims/toll', 'toll');

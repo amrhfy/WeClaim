@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('claim_id')->constrained('claim', 'id')->onDelete('cascade');
             $table->foreignId('reviewer_id')->constrained('users');
-            $table->enum('status', ['approved', 'rejected']);
-            $table->text('comments')->nullable();
+            $table->text('remarks_admin')->nullable();
+            $table->text('remarks_datuk')->nullable();
+            $table->text('remarks_hr')->nullable();
+            $table->text('remarks_finance')->nullable();
             $table->timestamp('reviewed_at');
             $table->timestamps();
         });
