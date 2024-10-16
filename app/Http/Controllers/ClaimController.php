@@ -160,7 +160,7 @@ class ClaimController extends Controller
                 $this->claimService->storeRemarks($user, $claim, $request->remarks);
             });
 
-            return redirect()->route('claims.approval')->with('success', 'Claim ' . $request->action . 'd successfully.');
+            return redirect()->route('claims.approval')->with('success', 'Claim ' . $request->action . ' successfully.');
         } else {
             return route('login');
         }

@@ -5,10 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Claim;
 use App\Models\ClaimDocument;
-<<<<<<< HEAD
 use App\Models\ClaimReview;
-=======
->>>>>>> origin/main
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -35,7 +32,6 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
     public function createOrUpdateClaim(array $data, User $user, $claimId = null)
     {
         if ($claimId) {
@@ -89,29 +85,6 @@ class ClaimService
         }
     }
 
-=======
-    public function buildClaim(array $data, User $user, $totalAmount)
-    {
-        $claim = new Claim();
-        $claim->user_id = $user->id;
-        $claim->title = 'TEMP';
-        $claim->description = $data['remarks'];
-        $claim->petrol_amount = $totalAmount;
-        $claim->status = self::STATUS_SUBMITTED;
-        $claim->claim_type = self::CLAIM_TYPE_PETROL;
-        $claim->submitted_at = now();
-        $claim->claim_company = strtoupper($data['claim_company']);
-        $claim->toll_amount = $data['toll_amount'];
-        $claim->total_distance = number_format((float)$data['total_distance'], 2, '.', '');
-        $claim->from_location = $data['location'][0] ?? null;
-        $claim->to_location = end($data['location']) ?? null;
-        $claim->date_from = $data['date_from'];
-        $claim->date_to = $data['date_to'];
-        $claim->token = \Illuminate\Support\Str::random(32);
-
-        return $claim;
-    }
->>>>>>> origin/main
     //////////////////////////////////////////////////////////////////
 
     public function updateClaimStatus(Claim $claim, string $status)
@@ -123,22 +96,6 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-=======
-    private function createLocations(Claim $claim, array $locations)
-    {
-        foreach ($locations as $index => $location) {
-            $claim->locations()->create([
-                'location' => $location,
-                'order' => $index + 1,
-                'claim_id' => $claim->id,
-            ]);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////
-
->>>>>>> origin/main
     public function handleFileUploadsAndDocuments($claim, $tollReport, $emailReport)
     {
         Storage::disk('public')->makeDirectory('uploads/claims/toll/');
@@ -183,56 +140,15 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-=======
-    public function createClaim(array $data, User $user)
-    {
-        Log::info('ClaimService@createClaim method called', ['data' => $data]);
-
-        try {
-            $totalDistance = $data['total_distance'];
-            $totalAmount = $this->calculateTotalAmount($totalDistance);
-
-            $claim = $this->buildClaim($data, $user, $totalAmount);
-            $claim->save();
-
-            $this->createLocations($claim, $data['location']);
-
-            $claim->title = 'Petrol Claim - ' . $claim->claim_company;
-            $claim->save();
-
-            Log::info('Claim saved', ['id' => $claim->id]);
-
-            return $claim;
-
-        } catch (\Exception $e) {
-
-            Log::info('Error creating claim: ' . $e->getMessage());
-            throw $e;
-
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////
-
->>>>>>> origin/main
     public function getClaimsBasedOnRole(User $user)
     {
         switch ($user->role->name) {
             case 'admin':
-<<<<<<< HEAD
                 return Claim::with('user')->whereIn('status', [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN, Claim::STATUS_REJECTED])->get();
             case 'hr':
                 return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_DATUK, Claim::STATUS_REJECTED])->get();
             case 'finance':
                 return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_HR, Claim::STATUS_APPROVED_FINANCE, Claim::STATUS_REJECTED])->get();
-=======
-                return Claim::with('user')->whereIn('status', [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN])->get();
-            case 'hr':
-                return Claim::with('user')->where('status', Claim::STATUS_APPROVED_DATUK)->get();
-            case 'finance':
-                return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_HR, Claim::STATUS_APPROVED_FINANCE])->get();
->>>>>>> origin/main
             default:
                 return Claim::with('user')->where('user_id', $user->id)->get();
         }
@@ -242,10 +158,7 @@ class ClaimService
 
     public function canReviewClaim(User $user, Claim $claim)
     {
-<<<<<<< HEAD
         $user = Auth::user();
-=======
->>>>>>> origin/main
         switch ($user->role->name) {
             case 'Admin':
                 return in_array($claim->status, [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN]);
@@ -263,28 +176,17 @@ class ClaimService
     public function approveClaim(User $user, Claim $claim)
     {
         switch ($user->role->name) {
-<<<<<<< HEAD
             case 'Admin':
-=======
-            case 'admin':
->>>>>>> origin/main
                 if ($claim->status === Claim::STATUS_SUBMITTED) {
                     $claim->status = Claim::STATUS_APPROVED_ADMIN;
                 } elseif ($claim->status === Claim::STATUS_APPROVED_ADMIN) {
                     $claim->status = Claim::STATUS_APPROVED_DATUK;
                 }
                 break;
-<<<<<<< HEAD
             case 'HR':
                 $claim->status = Claim::STATUS_APPROVED_HR;
                 break;
             case 'Finance':
-=======
-            case 'hr':
-                $claim->status = Claim::STATUS_APPROVED_HR;
-                break;
-            case 'finance':
->>>>>>> origin/main
                 if ($claim->status === Claim::STATUS_APPROVED_HR) {
                     $claim->status = Claim::STATUS_APPROVED_FINANCE;
                 } elseif ($claim->status === Claim::STATUS_APPROVED_FINANCE) {
@@ -298,7 +200,6 @@ class ClaimService
 
     //////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
     public function rejectClaim(User $user, Claim $claim)
     {
         $claim->status = Claim::STATUS_REJECTED;
@@ -319,6 +220,7 @@ class ClaimService
             'review_order' => $reviewOrder,
             'department' => $user->role->name,
             'reviewed_at' => now(),
+            'status' => $claim->status,
         ]);
     
         $claimReview->save();
@@ -348,6 +250,4 @@ class ClaimService
         }
     }
 
-=======
->>>>>>> origin/main
 }

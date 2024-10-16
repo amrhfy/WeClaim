@@ -97,11 +97,11 @@ use App\Models\Claim;
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_ADMIN)
                                                 Datuk Approval
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_DATUK)
-                                            HR Review
+                                                HR Review
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_HR)
-                                                bFinance Review
+                                                Finance Review
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_FINANCE)
-                                                bPayment Processing
+                                                Payment Processing
                                             @elseif ($claim->status == Claim::STATUS_DONE)
                                                 Completed
                                             @elseif ($claim->status == Claim::STATUS_REJECTED)

@@ -16,6 +16,7 @@ class ClaimReview extends Model
         'review_order',
         'department',
         'reviewed_at',
+        'status'
     ];
 
     protected $casts = [
