@@ -21,7 +21,7 @@ input[type="number"] {
 
 /* Media Queries */
 
-@media (max-width: 1280px) {
+@media (max-width: 1440px) {
     .lay-left {
         @apply hidden;
     }
@@ -31,7 +31,7 @@ input[type="number"] {
     }
 }
 
-@media (min-width: 1281px) {
+@media (min-width: 1441px) {
     .lay-left {
         @apply block;
     }
@@ -42,6 +42,7 @@ input[type="number"] {
 @layer components {
 
     /* Button Classes */
+
     .btn-view-doc {
         @apply wgg-center-content font-wgg text-wgg-black-950 text-sm font-medium rounded-lg cursor-pointer gap-2 transition-all ease-in-out w-fit underline hover:text-red-400;
     }
@@ -73,7 +74,7 @@ input[type="number"] {
     /* Main or Utilities Classes */
 
     .wgg-box-border-shadow {
-        @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
+        @apply w-full flex flex-col gap-5 p-8 *:font-normal *:font-wgg;
     }
 
     .content-container {
@@ -127,7 +128,7 @@ input[type="number"] {
     .form-label-other {
         @apply text-sm text-wgg-black-400 font-wgg font-normal;
     }
-    
+
     .progress-container {
         @apply w-full bg-gray-200 rounded-full h-2.5 mt-2;
     }
@@ -135,9 +136,6 @@ input[type="number"] {
     .progress-bar {
         @apply bg-blue-600 h-2.5 rounded-full;
     }
-
-
-    /*****************************/
 
     /* Review Page Classes */
 
@@ -165,8 +163,6 @@ input[type="number"] {
         @apply font-semibold font-wgg text-wgg-black-950 text-xl pl-4;
     }
 
-    /*****************************/
-
     /* Individual Claim Page Classes */
 
     .claim-indv-container {
@@ -184,13 +180,10 @@ input[type="number"] {
             @apply text-left w-3/4 text-sm text-wgg-black-950 font-medium;
         }
     }
-    
+
     .claim-indv-table-title {
         @apply font-semibold font-wgg text-wgg-black-950 text-xl pl-4;
     }
-
-
-    /*****************************/
 
     /* Navigation Page Classes */
 
@@ -218,9 +211,8 @@ input[type="number"] {
         @apply w-full flex flex-col gap-2 p-4 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
 
-    /*****************************/
-
     /* Claims Approval Classes */
+
     .claims-approval-container {
         @apply w-full flex flex-col gap-5 p-8 bg-wgg-white border border-wgg-border rounded-lg drop-shadow-md *:font-normal *:font-wgg;
     }
@@ -239,10 +231,6 @@ input[type="number"] {
 
     .claim-status-badge-admin {
         @apply bg-orange-400;
-    }
-
-    .claim-status-badge-admin {
-        @apply bg-cyan-500;
     }
 
     .claim-status-badge-hr {
@@ -264,8 +252,6 @@ input[type="number"] {
     .claim-status-badge-red {
         @apply bg-red-500;
     }
-
-    /*****************************/
 
     /* Claims Dashboard Classes */
 
@@ -297,7 +283,7 @@ input[type="number"] {
 
 
     /* New Claims Classes */
-s
+
     .distance-box {
         @apply flex justify-center items-center h-full bg-green-200 border border-gray-300 rounded-lg w-full py-4 px-8 gap-2 text-xs;
     }

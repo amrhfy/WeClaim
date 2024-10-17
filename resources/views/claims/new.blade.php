@@ -1,6 +1,7 @@
 <x-layout>
     @auth
 
+
     <main class="main *:font-wgg gap-10">
 
     <div class="wgg-flex-col gap-2">
@@ -122,7 +123,7 @@
                                 <input value="" class="form-input text-wgg-black-950" type="date" name="date_from" id="date-from">
                             </div>
 
-                            <div class="wgg-flex-col gap-2 basis-1/2">
+                            <div class="wgg-flex-col gap-2 w-full">
                                 <label class="form-label" for="date-to">To</label>
                                 <input value="" class="form-input text-wgg-black-950" type="date" name="date_to" id="date-to">
                             </div>

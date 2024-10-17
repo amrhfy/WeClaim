@@ -142,15 +142,19 @@ class ClaimService
 
     public function getClaimsBasedOnRole(User $user)
     {
+        $query = Claim::with('user');
+    
         switch ($user->role->name) {
-            case 'admin':
-                return Claim::with('user')->whereIn('status', [Claim::STATUS_SUBMITTED, Claim::STATUS_APPROVED_ADMIN, Claim::STATUS_REJECTED])->get();
-            case 'hr':
-                return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_DATUK, Claim::STATUS_REJECTED])->get();
-            case 'finance':
-                return Claim::with('user')->whereIn('status', [Claim::STATUS_APPROVED_HR, Claim::STATUS_APPROVED_FINANCE, Claim::STATUS_REJECTED])->get();
+            case 'Admin':
+                return $query->where('status', '!=', Claim::STATUS_DONE);
+            case 'Datuk':
+                return $query->where('status', Claim::STATUS_APPROVED_ADMIN);
+            case 'HR':
+                return $query->where('status', Claim::STATUS_APPROVED_DATUK);
+            case 'Finance':
+                return $query->where('status', Claim::STATUS_APPROVED_HR);
             default:
-                return Claim::with('user')->where('user_id', $user->id)->get();
+                return $query->where('user_id', $user->id);
         }
     }
 
@@ -212,7 +216,7 @@ class ClaimService
         $reviewOrder = ClaimReview::where('claim_id', $claim->id)
             ->where('department', $user->role->name)
             ->count() + 1;
-    
+
         $claimReview = new ClaimReview([
             'claim_id' => $claim->id,
             'reviewer_id' => $user->id,
@@ -222,7 +226,7 @@ class ClaimService
             'reviewed_at' => now(),
             'status' => $claim->status,
         ]);
-    
+
         $claimReview->save();
     }
 

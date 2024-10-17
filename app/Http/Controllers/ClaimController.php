@@ -41,13 +41,25 @@ class ClaimController extends Controller
 
     public function index($view)
     {
-        if (Auth::check()) {
-            $user = Auth::user();
-            $claims = Claim::with('user')->where('user_id', Auth::id())->get();
-            return view($view, compact('claims'));
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
-        
-        return redirect()->route('login');
+    
+        $user = Auth::user();
+        $perPage = 30;
+    
+        if ($view === 'claims.dashboard') {
+            $claims = Claim::with('user')->where('user_id', $user->id)->paginate($perPage);
+        } elseif ($view === 'claims.approval') {
+            $claims = $this->claimService->getClaimsBasedOnRole($user, $perPage);
+        } else {
+            abort(404);
+        }
+    
+        return view($view, [
+            'claims' => $claims,
+            'claimService' => $this->claimService
+        ]);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -169,41 +181,22 @@ class ClaimController extends Controller
     //////////////////////////////////////////////////////////////////
 
     private function determineNewStatus(User $user, Claim $claim)
-{
-    switch ($user->role->name) {
-        case 'admin':
-            return Claim::STATUS_APPROVED_ADMIN;
-        case 'datuk':
-            return Claim::STATUS_APPROVED_DATUK;
-        case 'hr':
-            return Claim::STATUS_APPROVED_HR;
-        case 'finance':
-            return Claim::STATUS_APPROVED_FINANCE;
-        default:
-            return $claim->status; // Keep current status if role is not recognized
-    }
-}
-
-    //////////////////////////////////////////////////////////////////
-
-    
-    public function approveClaim($id)
     {
-        $user = Auth::user();
-        $claim = Claim::findOrFail($id);
-
-        if ($user instanceof User) {
-            if (!$this->claimService->canReviewClaim($user, $claim)) {
-                return redirect()->route('claims.approval')->with('error', 'You do not have permission to approve this claim.');
-            }
-
-            $updatedClaim = $this->claimService->approveClaim($user, $claim);
-
-            return redirect()->route('claims.approval')->with('success', 'Claim approved successfully.');
-        } else {
-            return route('login');
+        switch ($user->role->name) {
+            case 'Admin':
+                return Claim::STATUS_APPROVED_ADMIN;
+            case 'Datuk':
+                return Claim::STATUS_APPROVED_DATUK;
+            case 'HR':
+                return Claim::STATUS_APPROVED_HR;
+            case 'Finance':
+                return Claim::STATUS_APPROVED_FINANCE;
+            default:
+                return $claim->status;
         }
     }
+
+    //////////////////////////////////////////////////////////////////
 
     public function viewDocument(Claim $claim, $type)
     {
