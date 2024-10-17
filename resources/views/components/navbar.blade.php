@@ -2,6 +2,7 @@
     <!-- Navbar Container -->
     <div class="flex flex-col h-full justify-between p-4">
         <div class="space-y-6">
+
             <!-- Home Link -->
             <a class="flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 {{ request()->routeIs('home') ? 'relative pl-4' : '' }}" href="{{ route('home') }}">
                 @if(request()->routeIs('home'))

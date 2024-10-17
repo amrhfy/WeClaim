@@ -57,7 +57,7 @@ use App\Models\Claim;
                                     <td class="px-6 py-4">{{ $claim->title }}</td>
                                     <td class="px-6 py-4">{{ number_format($claim->petrol_amount + $claim->toll_amount, 2) }}</td>
                                     <td class="px-6 py-4">
-                                        <span class="claims-dashboard-status-badge inline-flex items-center justify-center w-32 py-2 px-4 rounded font-bold text-white text-xs
+                                        <span class="claims-dashboard-status-badge inline-flex items-center justify-center w-full py-2 px-4 rounded font-bold text-white text-xs
                                             @if ($claim->status == Claim::STATUS_SUBMITTED)
                                                 bg-orange-500
                                             @elseif ($claim->status == Claim::STATUS_APPROVED_ADMIN)

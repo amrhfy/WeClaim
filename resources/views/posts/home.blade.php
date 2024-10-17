@@ -19,7 +19,7 @@
         @auth
             <div class="bg-white shadow-xl rounded-lg overflow-hidden">
                 <div class="px-6 py-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Welcome, {{ auth()->user()->name }}</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome, {{ auth()->user()->name }}</h2>
                     <div class="flex items-center mb-6">
                         <span class="text-gray-600 mr-2">Status:</span>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Logged In</span>
@@ -56,11 +56,12 @@
                                         <li class="bg-white p-4 rounded-md shadow  hover:bg-gray-50">
                                             <a href="{{ route('claims.claim', $claim->id) }}" class="block">
                                                 <div class="flex justify-between items-center">
-                                                    <span class="text-sm font-medium text-gray-900">Claim #{{ $claim->id }}</span>
+                                                    <span class="text-sm font-semibold text-gray-900">Claim #{{ $claim->id }}</span>
                                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $claim->status === 'approved' ? 'bg-green-100 text-green-800' : ($claim->status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
                                                         {{ ucfirst($claim->status) }}
                                                     </span>
                                                 </div>
+                                                <p class="mt-1 text-sm text-gray-600">By: {{ $claim->user->first_name . $claim->user->second_name }}</p>
                                                 <p class="mt-1 text-sm text-gray-600">Total Distance: {{ $claim->total_distance }} KM</p>
                                                 <p class="mt-1 text-sm text-gray-600">Locations: {{ $claim->locations->count() }}</p>
                                                 <p class="mt-1 text-sm text-gray-600">Date: {{ $claim->date_from->format('d M Y') }} - {{ $claim->date_to->format('d M Y') }}</p>
