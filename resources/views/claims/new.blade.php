@@ -1,7 +1,6 @@
 <x-layout>
     @auth
 
-    
     <main class="main *:font-wgg gap-10">
 
     <div class="wgg-flex-col gap-2">
@@ -17,11 +16,11 @@
 
         @if($existingClaim)
         <div class="wgg-flex-col gap-10">
-    
+
             @if($existingClaim)
 
             <div class="wgg-box-border-shadow">
-            
+
                 <!-- Rejected Claim Data -->
                 <div class="flex flex-col px-4">
                     <h1 class="text-2xl text-wgg-black-950 font-semibold">
@@ -33,7 +32,7 @@
                 <div class="flex-col flex gap-4">
                     <table class="table-auto">
                         <tr class="claims-dashboard-table-header">
-                            
+
                             <th>Submitted At</th>
                             <th>Date From</th>
                             <th>Date To</th>
@@ -70,9 +69,9 @@
                 </div>
 
             </div>
-            
+
             <div class="wgg-box-border-shadow">
-            
+
 
                 <div class="wgg-flex-col gap-4">
                     <div class="wgg-flex-col gap-2">
@@ -80,7 +79,7 @@
                             Old Location Details<br>
                             <span class="text-red-500 text-base font-normal">Refer this table to view your old claim data.</span>
                         </h1>
-                        
+
                         <table>
                             <tbody class="">
                                 @foreach($existingClaim->locations as $index => $location)
@@ -97,27 +96,27 @@
             </div>
 
             @endif
-        
+
         @else
         <div>
         @endif
-            
+
 
             <form class="wgg-flex-col gap-6" action="{{ route('claims.new') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if($existingClaim)
                     <input type="hidden" name="claim_id" value="{{ $existingClaim->id }}">
                 @endif
-            
+
                 <!-- Date & Map Container -->
                 <div class="form-container-1 shadow-md">
-                    
+
                     <!-- Left Side -->
                     <div class="wgg-flex-col col-span-1 gap-2">
 
                         <!-- Date Range -->
                         <div class="wgg-flex-row gap-2">
-                            
+
                             <div class="wgg-flex-col gap-2 basis-1/2">
                                 <label class="form-label" for="date-from">From</label>
                                 <input value="" class="form-input text-wgg-black-950" type="date" name="date_from" id="date-from">
@@ -237,7 +236,7 @@
                         </div>
 
                     </div>
-                    
+
                     <!-- Right Side -->
                     <div class="wgg-flex-col col-span-2 gap-2">
                         <div id="map" class="wgg-flex-col gap-2"></div>
@@ -250,7 +249,7 @@
                         </button>
                     </div>
 
-                    {{--                     
+                    {{--
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -276,11 +275,9 @@
     @endauth
 
     @guest
-        <script>window.location.href = "{{ route('login') }}";</script>   
+        <script>window.location.href = "{{ route('login') }}";</script>
     @endguest
 
 
 
 </x-layout>
-
-
